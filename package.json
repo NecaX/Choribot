@@ -1,0 +1,13 @@
+{
+  "name": "Choribot",
+  "version": "0.0.3",
+  "description": "Bot de Chorizolandia V2",
+  "main": "bot.js",
+  "author": "NecaX",
+  "dependencies": {
+    "discord.js": "^11.2.1",
+    "enmap": "^0.1.2",
+    "readdir": "0.0.13",
+    "winston": "^2.3.1"
+  }
+}
