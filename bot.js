@@ -7,6 +7,10 @@ client.on("ready", () => {
 	console.log("En marcha!");
 });
 
+client.on("guildMemberAdd", (member) => {
+  console.log(`Nuevo Usuario "${member.user.username}" Ha entrado a "${member.guild.name}"` );
+  member.guild.defaultChannel.send(`"${member.user.username}" ha entrado al servidor`);
+});
 
 client.on("message", (message, author) => {
 	
@@ -40,5 +44,6 @@ client.on("message", (message, author) => {
 		}
 	}
 });
+
 
 client.login(config.token);
