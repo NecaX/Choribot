@@ -18,3 +18,4 @@ empezar a trabajar en él.
 	
 > ### Alpa 0.0.5
 	- Se ha añadido el comando $Sugerencia
+	- Se han añadido los comandos $Conectar y $Desconectar para conectar el bot al canal de voz
