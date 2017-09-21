@@ -7,7 +7,6 @@ client.on("ready", () => {
 	console.log("En marcha!");
 });
 
-// This loop reads the /events/ folder and attaches each event file to the appropriate event.
 
 client.on("message", (message, author) => {
 	
