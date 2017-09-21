@@ -14,4 +14,7 @@ empezar a trabajar en él.
 	
 > ### Alpa 0.0.4
 	- Separación de los comandos en archivos propios.
-	- Integración del comando $Dado (num)d(num).
+	- Se ha añadido el comando $Dado (num)d(num).
+	
+> ### Alpa 0.0.5
+	- Se ha añadido el comando $Sugerencia
