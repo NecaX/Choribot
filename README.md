@@ -19,3 +19,6 @@ empezar a trabajar en él.
 > ### Alpa 0.0.5
 	- Se ha añadido el comando $Sugerencia
 	- Se han añadido los comandos $Canta y $Callate para conectar el bot al canal de voz y que cante/deje de cantar
+	
+## Proximas implementaciones
+	- Comando $insultar
