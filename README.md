@@ -22,3 +22,4 @@ empezar a trabajar en él.
 	
 ## Proximas implementaciones
 	- Comando $insultar
+	- Terminar comando $canta, pudiendo elegir una cancion expcifica mediante patrones, una aleatoria o en bucle la lista
