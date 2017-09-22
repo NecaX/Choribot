@@ -3,7 +3,10 @@ exports.run = (client, message, args) => {
 		if (message.member.voiceChannel) {
 		  message.member.voiceChannel.join()
 			.then(connection => { 
-			  message.reply('Me he conectado al canal de voz correctamente');
+				const fs = require('fs');
+				const stream = fs.createReadStream('./musica/coches de choque.mp3');
+				const dispatcher = connection.playStream(stream);
+				dispatcher.setVolume(0.15);
 			})
 			.catch(console.log);
 		} else {
