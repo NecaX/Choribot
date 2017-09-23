@@ -17,9 +17,14 @@ empezar a trabajar en él.
 	- Se ha añadido el comando $Dado (num)d(num).
 	
 > ### Alpa 0.0.5
-	- Se ha añadido el comando $Sugerencia
-	- Se han añadido los comandos $Canta y $Callate para conectar el bot al canal de voz y que cante/deje de cantar
+	- Se ha añadido el comando $Sugerencia.
+	- Se han añadido los comandos $Canta y $Callate para conectar el bot al canal de voz y que cante/deje de cantar.
+
+> ### Alpa 0.0.6
+	- Cambio de nombre del comando $Cantar a $Musica.
+	- Se han añadido varios argumentos que se pueden ver en $Musica Argumentos.
+	- Modificacion visual de $Ayuda.
 	
 ## Proximas implementaciones
 	- Comando $insultar
-	- Terminar comando $canta, pudiendo elegir una cancion expcifica mediante patrones, una aleatoria o en bucle la lista
+	- Terminar comando $musica, pudiendo elegir una cancion expcifica mediante patrones, una aleatoria o en bucle la lista
