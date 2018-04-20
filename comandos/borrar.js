@@ -4,6 +4,7 @@ exports.run = (client, message, args) => {
 		const amount = !!parseInt(message.content.split(' ')[1]) ? parseInt(message.content.split(' ')[1]) : parseInt(message.content.split(' ')[2])
 		if (!amount) return message.reply('tienes que indicar cuantos mensajes borrar');
 		if (!amount && !user) return message.reply('tienes que indicar cuantos mensajes borrar y/o un usuario');
+		if (amount > 15 && !message.member.roles.some(r=>["Señor total del universo"].includes(r.name))) return message.reply('Demasiados mensajes, no la lies tanto');
 		message.channel.fetchMessages({
 			limit: amount,
 		}).then((messages) => {
