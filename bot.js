@@ -9,7 +9,8 @@ client.on("ready", () => {
 
 client.on("guildMemberAdd", (member) => {
   console.log(`Nuevo Usuario "${member.user.username}" Ha entrado a "${member.guild.name}"` );
-  member.guild.defaultChannel.send(`"${member.user.username}" ha entrado al servidor`);
+  
+  client.channels.find('id','294922283942674443').send(member.user.username+' ha entrado al servidor', {tts: true});
 });
 
 client.on("message", (message, author) => {
@@ -39,6 +40,10 @@ client.on("message", (message, author) => {
 			
 			case 'choribot, eres del pp?':
 				message.channel.send('Quita, quita, que ajco, no?', {tts: true});
+			break;
+			
+			case 'choribot prueba':
+				message.channel.send(message.channel.id);
 			break;
 			// Mas conversaciones
 		}

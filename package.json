@@ -1,15 +1,28 @@
 {
-  "name": "Choribot",
+  "name": "choribot",
   "version": "0.0.3",
   "description": "Bot de Chorizolandia V2",
   "main": "bot.js",
   "author": "NecaX",
   "dependencies": {
-    "discord.js": "^11.2.1",
+    "discord.js": "^11.3.2",
     "enmap": "^0.1.2",
     "ffmpeg-binaries": "^3.2.2-3",
     "opusscript": "0.0.3",
     "readdir": "0.0.13",
-    "winston": "^2.3.1"
-  }
+    "winston": "^2.3.1",
+    "ytdl-core": "^0.20.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NecaX/Choribot.git"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NecaX/Choribot/issues"
+  },
+  "homepage": "https://github.com/NecaX/Choribot#readme"
 }
