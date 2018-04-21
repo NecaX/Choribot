@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
 const config = require("./config.json");
-
+var off = 0; //musica
 
 client.on("ready", () => {
 	console.log("En marcha!");
@@ -50,5 +50,15 @@ client.on("message", (message, author) => {
 	}
 });
 
+client.on("voiceStateUpdate", (GuildMember) => { //Indica que alguien se ha conectado al canal de voz principal
+	client.channels.find('id','294922283942674443').send('a: '+GuildMember.voiceChannelID);
+	if(GuildMember.voiceChannelID != '294922283942674444'){
+		client.channels.find('id','294922283942674443').send(GuildMember.user.username+' ahora esta conectado al Mercado de la Sal, ¡Bienvenido!', {tts: true});
+		console.log(GuildMember.user.username+' Se ha conectado')
+	}else{
+		client.channels.find('id','294922283942674443').send(GuildMember.user.username+' se ha desconectado del Mercado de la Sal, ¡A la mierda!', {tts: true});
+		console.log(GuildMember.user.username+' Se ha desconectado')
+	}
+});
 
 client.login(config.token);
