@@ -27,6 +27,15 @@ empezar a trabajar en él.
 > ### Alpha 0.0.7
 	- Se ha finalizado el comando $Musica, ahora te permite poner, quitar o cambiar de canción de forma aleatoria de la carpeta de musica que se encuentra en la raiz del proyecto.
 	- Ahora el bot te da la bienvenida cuando entras al canal de voz principal.
+
+> ### Alpha 0.0.7
+	- Se ha incluido el comando $Musica buscar que permite buscar una canción específica de la carpeta música.
+	- Se ha incluido el comando $Musica lista que te envia por privado la lista de canciones disponibles.
+	- Se han añadido en la raiz del proyecto unos ejecutables para lanzar el bot sin necesidad de entrar en la consola.
+	- Mejora del comando $Ayuda para evitar flood de mensajes.
+	- Mejora del comando $Reacciones.
+	- Se ha incluido el comando $Verid para el adminsitrador que permite ver el id de un canal.
 	
 ## Proximas implementaciones
+	- Documentar la instalación del bot
 	- Comando $insultar
