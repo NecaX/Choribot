@@ -38,8 +38,9 @@ empezar a trabajar en él.
 
 > ### Beta 0.1
 	-Primera beta del bot, alcanzamos este estado porque creo que el bot ya tiene unas funcionalidades básicas suficientes para resultar de alguna utilidad.
-	-Interconexión Discord-Telegram. Choribot ha decidio viajar al mundo de la multiplataforma, conectando mensajes de un chat de telegram con un canal de texto de Discord, en ambas direcciones.
-	
+	-Interconexión Discord-Telegram. Choribot ha decidio viajar al mundo de la multiplataforma, conectando mensajes de un chat de Telegram con un canal de texto de Discord, en ambas direcciones.
+	-Se ha integrado un WebHook en el canal de discord (Esto no aparece en el código, pero se da como sugerencia para ver actualizaciones del bot).
+
 ## Proximas implementaciones
 	- Documentar la instalación del bot
 	- Comando $insultar
