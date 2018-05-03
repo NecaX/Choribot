@@ -35,6 +35,10 @@ empezar a trabajar en él.
 	- Mejora del comando $Ayuda para evitar flood de mensajes.
 	- Mejora del comando $Reacciones.
 	- Se ha incluido el comando $Verid para el adminsitrador que permite ver el id de un canal.
+
+> ### Beta 0.1
+	-Primera beta del bot, alcanzamos este estado porque creo que el bot ya tiene unas funcionalidades básicas suficientes para resultar de alguna utilidad.
+	-Interconexión Discord-Telegram. Choribot ha decidio viajar al mundo de la multiplataforma, conectando mensajes de un chat de telegram con un canal de texto de Discord, en ambas direcciones.
 	
 ## Proximas implementaciones
 	- Documentar la instalación del bot
