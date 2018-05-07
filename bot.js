@@ -20,6 +20,8 @@ const discordSetup = require("./lib/discord2telegram/setup");
 const clientd = new Discord.Client();
 const config = require("./config.json");
 var off = 0; //musica
+var llamarp = 0; //llamar
+var alrm;
 
 clientd.on("ready", () => {
 	console.log("En marcha!");

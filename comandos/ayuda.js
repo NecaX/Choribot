@@ -23,6 +23,8 @@ exports.run = (client, message, args) => {
 				  "Lanzo un dado de Y caras X veces.")
 		.addField("$Borrar cantidad [usuario]",
 				  "Para borrar una cantidad X de mensajes [De un usuario concreto].")
+		.addField("$Llamar [usuario/parar]",
+				  "Envia mensajes sin parar a un usuario o para el envio.")
 		.addField("$Sugerencia",
 				  "Para enviar cualquier sugerencia para mi desarrollo.")
 		.addField("$About",

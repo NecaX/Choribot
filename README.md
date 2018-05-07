@@ -41,6 +41,9 @@ empezar a trabajar en él.
 	-Interconexión Discord-Telegram. Choribot ha decidio viajar al mundo de la multiplataforma, conectando mensajes de un chat de Telegram con un canal de texto de Discord, en ambas direcciones.
 	-Se ha integrado un WebHook en el canal de discord (Esto no aparece en el código, pero se da como sugerencia para ver actualizaciones del bot).
 
+>### Beta 0.2
+	-Implementación del comando $Llamar [nombre], que manda mensajes a un usuario por privado hasta que recibe el comando $Llamar Parar.
+
 ## Proximas implementaciones
 	- Documentar la instalación del bot
 	- Comando $insultar
