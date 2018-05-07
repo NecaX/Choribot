@@ -44,6 +44,12 @@ empezar a trabajar en él.
 >### Beta 0.2
 	-Implementación del comando $Llamar [nombre], que manda mensajes a un usuario por privado hasta que recibe el comando $Llamar Parar.
 
+>### Beta 0.3
+	-Solución de errores del comando $Llamar, ahora para el envio de mensajes cuando se ejecuta el comando $Llamar parar correctamente.
+	-Ahora el bot tiene estado cuando arranca.
+	-Se ha creado el fichero Inicio.js que se ejecuta cuando se inicia el bot, por si fuera necesario hacer más cosas en este momento.
+
 ## Proximas implementaciones
+	- Comando $Llamar con @usuario
 	- Documentar la instalación del bot
-	- Comando $insultar
+	- Comando $Insultar

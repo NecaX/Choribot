@@ -21,17 +21,28 @@ const clientd = new Discord.Client();
 const config = require("./config.json");
 var off = 0; //musica
 var llamarp = 0; //llamar
-var alrm;
+var alrm = null;
+
 
 clientd.on("ready", () => {
 	console.log("En marcha!");
+	//Inicio
+	try {
+		let commandFile = require(`./inicio.js`);
+		commandFile.run(clientd);
+	} catch (err) {
+		console.error(err);
+	}
 });
+
 
 clientd.on("guildMemberAdd", (member) => {
   console.log(`Nuevo Usuario "${member.user.username}" Ha entrado a "${member.guild.name}"` );
   
-  client.channels.find('id','294922283942674443').send(member.user.username+' ha entrado al servidor', {tts: true});
+  clientd.channels.find('id','294922283942674443').send(member.user.username+' ha entrado al servidor', {tts: true});
 });
+
+
 
 clientd.on("message", (message, author) => {
 	
