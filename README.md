@@ -55,6 +55,9 @@ empezar a trabajar en él.
 	-El comando $Llamar ahora envía una imagen en lugar de texto.
 	-Actualización de $Ayuda.
 
+>### Beta 0.5
+	-Solución de errores en $Llamar, ahora debe enviar alertas a los usuarios sin problemas.
+
 ## Proximas implementaciones
 	- Documentar la instalación del bot
 	- Comando $Sorteo
