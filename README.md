@@ -42,7 +42,7 @@ empezar a trabajar en él.
 	-Se ha integrado un WebHook en el canal de discord (Esto no aparece en el código, pero se da como sugerencia para ver actualizaciones del bot).
 
 >### Beta 0.2
-	-Implementación del comando $Llamar [nombre], que manda mensajes a un usuario por privado hasta que recibe el comando $Llamar Parar.
+	-Implementación del comando $Llamar nombre, que manda mensajes a un usuario por privado hasta que recibe el comando $Llamar Parar.
 
 >### Beta 0.3
 	-Solución de errores del comando $Llamar, ahora para el envio de mensajes cuando se ejecuta el comando $Llamar parar correctamente.
