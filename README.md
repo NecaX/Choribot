@@ -57,6 +57,7 @@ empezar a trabajar en él.
 
 >### Beta 0.5
 	-Solución de errores en $Llamar, ahora debe enviar alertas a los usuarios sin problemas.
+	-Mejora del comando borrar, borra automaticamente el mensaje escrito con este comando.
 
 ## Proximas implementaciones
 	- Documentar la instalación del bot
