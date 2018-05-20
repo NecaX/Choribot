@@ -49,7 +49,13 @@ empezar a trabajar en él.
 	-Ahora el bot tiene estado cuando arranca.
 	-Se ha creado el fichero Inicio.js que se ejecuta cuando se inicia el bot, por si fuera necesario hacer más cosas en este momento.
 
+>### Beta 0.4
+	-Implementación del comando $E3 para ver información relativa al evento de este año.
+	-Ahora el comando $Llamar funciona con menciones (@alguien).
+	-El comando $Llamar ahora envía una imagen en lugar de texto.
+	-Actualización de $Ayuda.
+
 ## Proximas implementaciones
-	- Comando $Llamar con @usuario
 	- Documentar la instalación del bot
+	- Comando $Sorteo
 	- Comando $Insultar
