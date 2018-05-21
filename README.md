@@ -59,6 +59,14 @@ empezar a trabajar en él.
 	-Solución de errores en $Llamar, ahora debe enviar alertas a los usuarios sin problemas.
 	-Mejora del comando borrar, borra automaticamente el mensaje escrito con este comando.
 
+>### Beta 0.6
+	-Se ha cambiado el prefijo de $ a / para tener compatibilidad con Telegram y proceder a implementar algunos comandos en esta última plataforma.
+	-Ahora los comandos de Discord pueden lanzarse desde telegram respetando los permisos de discord.
+	-En telegram aparecen los comandos al poner / en el chat grupal.
+	-Se le ha puesto imagen al Bot en telegram.
+	-Ahora se ejecutan comandos de mensajes editados.
+	-Solución de errores.
+
 ## Proximas implementaciones
 	- Documentar la instalación del bot
 	- Comando $Sorteo

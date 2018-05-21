@@ -9,44 +9,112 @@ const Bridge = require("./lib/bridgestuff/Bridge");
 const BridgeMap = require("./lib/bridgestuff/BridgeMap");
 const Settings = require("./lib/settings/Settings");
 const migrateSettingsToYAML = require("./lib/migrateSettingsToYAML");
-
-// Telegram
-const { BotAPI } = require("teleapiwrapper");
-const telegramSetup = require("./lib/telegram2discord/setup");
-
-// Discord
-const Discord = require("discord.js");
-const discordSetup = require("./lib/discord2telegram/setup");
-const clientd = new Discord.Client();
-const config = require("./config.json");
+const settingsPathJSON = path.join(__dirname, "settings.json");
+const settingsPathYAML = path.join(__dirname, "settings.yaml");
+migrateSettingsToYAML(settingsPathJSON, settingsPathYAML);
+const settings = Settings.fromFile(settingsPathYAML);
+settings.toFile(settingsPathYAML);
 var off = 0; //musica
 var llamarp = 0; //llamar
 var alrm = null;
 
+// Telegram
+const { BotAPI } = require("teleapiwrapper");
+const telegramSetup = require("./lib/telegram2discord/setup");
+const tgBot = new BotAPI(settings.telegram.token);
 
-clientd.on("ready", () => {
+// Discord
+const Discord = require("discord.js");
+const discordSetup = require("./lib/discord2telegram/setup");
+const discBot = new Discord.Client();
+const config = settings.discord;
+
+//Puente
+try {
+	const dcUsers = new DiscordUserMap(path.join(__dirname, "data", "discord_users.json"));
+	const messageMap = new MessageMap();
+	const bridgeMap = new BridgeMap(settings.bridges.map((bridgeSettings) => new Bridge(bridgeSettings)));
+
+	/*********************
+	 * Set up the bridge *
+	 *********************/
+
+	discordSetup(discBot, tgBot, dcUsers, messageMap, bridgeMap, settings);
+	telegramSetup(tgBot, discBot, dcUsers, messageMap, bridgeMap, settings);
+} catch (err) {
+	Application.logger.error(err);
+	throw err;
+}
+
+
+discBot.on("ready", () => {
 	console.log("En marcha!");
 	//Inicio
 	try {
 		let commandFile = require(`./inicio.js`);
-		commandFile.run(clientd);
+		commandFile.run(discBot);
 	} catch (err) {
 		console.error(err);
 	}
 });
 
 
-clientd.on("guildMemberAdd", (member) => {
+discBot.on("guildMemberAdd", (member) => {
   console.log(`Nuevo Usuario "${member.user.username}" Ha entrado a "${member.guild.name}"` );
   
-  clientd.channels.find('id','294922283942674443').send(member.user.username+' ha entrado al servidor', {tts: true});
+  discBot.channels.find('id','294922283942674443').send(member.user.username+' ha entrado al servidor', {tts: true});
 });
 
 
 
-clientd.on("message", (message, author) => {
-	
-	if (message.author.bot) return;
+discBot.on("message", (message) => {
+	ejecutarcomandos(message);	
+});
+
+discBot.on("messageUpdate", (oldMessage, newMessage) => {
+	ejecutarcomandos(newMessage);
+});
+
+discBot.on("voiceStateUpdate", (GuildMember) => { //Indica que alguien se ha conectado al canal de voz principal
+	if(GuildMember.voiceChannelID != '294922283942674444'){
+		//client.channels.find('id','294922283942674443').send(GuildMember.user.username+' ahora esta conectado al Mercado de la Sal, ¡Bienvenido!', {tts: true});
+		console.log(GuildMember.user.username+' Se ha conectado')
+	}else{
+		//client.channels.find('id','294922283942674443').send(GuildMember.user.username+' se ha desconectado del Mercado de la Sal, ¡A la mierda!', {tts: true});
+		console.log(GuildMember.user.username+' Se ha desconectado')
+	}
+});
+
+discBot.login(config.token);
+
+//funciones
+
+function ejecutarcomandos(message){
+	if (message.author.bot) { //Permitir ejecutar comandos de discord desde Telegram
+		var T2DCommand=message.content;
+		var T2DCommAuth = "";
+
+		while (T2DCommand.slice(0,1) != ":" && T2DCommand !== ""){ //Se elimina el nombre de la persona que ha emitido el mensaje
+			T2DCommAuth = T2DCommAuth.concat(T2DCommand.slice(0,1));
+			T2DCommand = T2DCommand.slice(1);
+		}
+		T2DCommAuth = T2DCommAuth.slice(2, -2);
+		
+		while (T2DCommand.slice(0,1) != config.prefix && T2DCommand !== ""){ //Se elimina el nombre de la persona que ha emitido el mensaje
+			T2DCommand = T2DCommand.slice(1);
+		}
+		if(T2DCommand == "") return;
+
+		const args = T2DCommand.slice(config.prefix.length).trim().split(/ +/g);
+		const command = args.shift().toLowerCase();
+
+		if(discBot.users.find('username',T2DCommAuth)!==null){
+			T2DCommAuth = discBot.users.find('username',T2DCommAuth).id; //Se tranforma el username en el id
+			message.member = message.channel.members.find('id',T2DCommAuth);
+			message.content = T2DCommand;		
+		}
+		
+	};
 	if (message.content.startsWith(config.prefix)) { //Comandos que empiezan por el prefijo
 	  
 		const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
@@ -54,13 +122,13 @@ clientd.on("message", (message, author) => {
 		
 		try {
 			let commandFile = require(`./comandos/${command}.js`);
-			commandFile.run(clientd, message, args);
+			commandFile.run(discBot, message, args);
 		  } catch (err) {
 			console.error(err);
 		  }
 	}
 	
-	if (message.content.startsWith('Choribot')) { //Comandos conversacionales
+	if (message.content.toLowerCase().startsWith('choribot')) { //Comandos conversacionales
 		
 		const command = message.content.toLowerCase();
 		
@@ -79,54 +147,5 @@ clientd.on("message", (message, author) => {
 			// Mas conversaciones
 		}
 	}
-});
-
-clientd.on("voiceStateUpdate", (GuildMember) => { //Indica que alguien se ha conectado al canal de voz principal
-	if(GuildMember.voiceChannelID != '294922283942674444'){
-		//client.channels.find('id','294922283942674443').send(GuildMember.user.username+' ahora esta conectado al Mercado de la Sal, ¡Bienvenido!', {tts: true});
-		console.log(GuildMember.user.username+' Se ha conectado')
-	}else{
-		//client.channels.find('id','294922283942674443').send(GuildMember.user.username+' se ha desconectado del Mercado de la Sal, ¡A la mierda!', {tts: true});
-		console.log(GuildMember.user.username+' Se ha desconectado')
-	}
-});
-
-clientd.login(config.token);
-
-// Integración Telegram - Discord
-
-try {
-	// Migrate the settings from JSON to YAML
-	const settingsPathJSON = path.join(__dirname, "settings.json");
-	const settingsPathYAML = path.join(__dirname, "settings.yaml");
-	migrateSettingsToYAML(settingsPathJSON, settingsPathYAML);
-
-	// Get the settings
-	const settings = Settings.fromFile(settingsPathYAML);
-
-	// Save the settings, as they might have changed
-	settings.toFile(settingsPathYAML);
-
-	// Create a Telegram bot
-	const tgBot = new BotAPI(settings.telegram.token);
-
-	// Create/Load the discord user map
-	const dcUsers = new DiscordUserMap(path.join(__dirname, "data", "discord_users.json"));
-
-	// Create a message ID map
-	const messageMap = new MessageMap();
-
-	// Create the bridge map
-	const bridgeMap = new BridgeMap(settings.bridges.map((bridgeSettings) => new Bridge(bridgeSettings)));
-
-	/*********************
-	 * Set up the bridge *
-	 *********************/
-
-	discordSetup(clientd, tgBot, dcUsers, messageMap, bridgeMap, settings);
-	telegramSetup(tgBot, clientd, dcUsers, messageMap, bridgeMap, settings);
-} catch (err) {
-	// Log the timestamp and re-throw the error
-	Application.logger.error(err);
-	throw err;
 }
+
