@@ -65,7 +65,7 @@ empezar a trabajar en él.
 	-En telegram aparecen los comandos al poner / en el chat grupal.
 	-Se le ha puesto imagen al Bot en telegram.
 	-Ahora se ejecutan comandos de mensajes editados.
-	-Solución de errores.
+	-Solución de errores varios.
 
 ## Proximas implementaciones
 	- Documentar la instalación del bot
