@@ -14,6 +14,9 @@ const settingsPathYAML = path.join(__dirname, "settings.yaml");
 migrateSettingsToYAML(settingsPathJSON, settingsPathYAML);
 const settings = Settings.fromFile(settingsPathYAML);
 settings.toFile(settingsPathYAML);
+alrm = setInterval(function(){resetCon()},15000); //Resetear conexiones
+var lastUserC = 0 // Ultimo usuario en conectarse
+var lastUserD = 0 // Ultimo usuuario en desconectarse
 var off = 0; //musica
 var llamarp = 0; //llamar
 var alrm = null;
@@ -75,13 +78,18 @@ discBot.on("messageUpdate", (oldMessage, newMessage) => {
 	ejecutarcomandos(newMessage);
 });
 
-discBot.on("voiceStateUpdate", (GuildMember) => { //Indica que alguien se ha conectado al canal de voz principal
-	if(GuildMember.voiceChannelID != '294922283942674444'){
-		//client.channels.find('id','294922283942674443').send(GuildMember.user.username+' ahora esta conectado al Mercado de la Sal, ¡Bienvenido!', {tts: true});
-		console.log(GuildMember.user.username+' Se ha conectado')
-	}else{
-		//client.channels.find('id','294922283942674443').send(GuildMember.user.username+' se ha desconectado del Mercado de la Sal, ¡A la mierda!', {tts: true});
-		console.log(GuildMember.user.username+' Se ha desconectado')
+discBot.on("voiceStateUpdate", (olduser,newuser) => { //Indica que alguien se ha conectado al canal de voz principal
+	if(newuser.voiceChannelID != null && olduser.voiceChannelID == null && newuser.id != lastUserC){
+		discBot.channels.find('id','294922283942674443').send(newuser.user.username+' Se ha conectado, ¡Bienvenido!', {tts: true});
+		discBot.channels.find('id','294922283942674443').bulkDelete(1);
+		lastUserC = newuser.id;
+		console.log(newuser.user.username+' Se ha conectado');
+	}
+	if(newuser.voiceChannelID == null && olduser.voiceChannelID != null && olduser.id != lastUserD){
+		discBot.channels.find('id','294922283942674443').send(olduser.user.username+' Se ha desconectado', {tts: true});
+		discBot.channels.find('id','294922283942674443').bulkDelete(1);		
+		lastUserD = olduser.id;
+		console.log(olduser.user.username+' Se ha desconectado');
 	}
 });
 
@@ -147,5 +155,10 @@ function ejecutarcomandos(message){
 			// Mas conversaciones
 		}
 	}
+}
+
+function resetCon(){
+	lastUserC=0;
+	lastUserD=0;
 }
 

@@ -67,6 +67,10 @@ empezar a trabajar en él.
 	-Ahora se ejecutan comandos de mensajes editados.
 	-Solución de errores varios.
 
+>### Beta 0.7
+	-Eliminado el comando /E3, almacenado en una nueva carpeta para futuras reutilizaciones.
+	-Ahora el Bot dice quien se conecta y se desconecta a un canal de voz dado, con mecanismo anti flood.
+
 ## Proximas implementaciones
 	- Documentar la instalación del bot
 	- Comando $Sorteo
