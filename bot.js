@@ -20,6 +20,7 @@ var lastUserD = 0 // Ultimo usuuario en desconectarse
 var off = 0; //musica
 var llamarp = 0; //llamar
 var alrm = null;
+const fs = require('fs');
 
 // Telegram
 const { BotAPI } = require("teleapiwrapper");
@@ -31,6 +32,7 @@ const Discord = require("discord.js");
 const discordSetup = require("./lib/discord2telegram/setup");
 const discBot = new Discord.Client();
 const config = settings.discord;
+
 
 //Puente
 try {
@@ -78,18 +80,19 @@ discBot.on("messageUpdate", (oldMessage, newMessage) => {
 	ejecutarcomandos(newMessage);
 });
 
+
 discBot.on("voiceStateUpdate", (olduser,newuser) => { //Indica que alguien se ha conectado al canal de voz principal
-	if(newuser.voiceChannelID != null && olduser.voiceChannelID == null && newuser.id != lastUserC){
+	if(newuser.voiceChannelID != null && olduser.voiceChannelID == null && newuser.id != lastUserC && newuser.id != 357503738287489024){
 		discBot.channels.find('id','294922283942674443').send(newuser.user.username+' Se ha conectado, ¡Bienvenido!', {tts: true});
 		discBot.channels.find('id','294922283942674443').bulkDelete(1);
 		lastUserC = newuser.id;
-		console.log(newuser.user.username+' Se ha conectado');
+		escribirU(discBot);
 	}
-	if(newuser.voiceChannelID == null && olduser.voiceChannelID != null && olduser.id != lastUserD){
+	if(newuser.voiceChannelID == null && olduser.voiceChannelID != null && olduser.id != lastUserD && newuser.id != 357503738287489024){
 		discBot.channels.find('id','294922283942674443').send(olduser.user.username+' Se ha desconectado', {tts: true});
 		discBot.channels.find('id','294922283942674443').bulkDelete(1);		
 		lastUserD = olduser.id;
-		console.log(olduser.user.username+' Se ha desconectado');
+		escribirU(discBot);
 	}
 });
 
@@ -98,36 +101,36 @@ discBot.login(config.token);
 //funciones
 
 function ejecutarcomandos(message){
+	
 	if (message.author.bot) { //Permitir ejecutar comandos de discord desde Telegram
 		var T2DCommand=message.content;
 		var T2DCommAuth = "";
+		if (message.content.startsWith(!config.prefix)) {
+			while (T2DCommand.slice(0,1) != ":" && T2DCommand !== ""){ //Se elimina el nombre de la persona que ha emitido el mensaje
+				T2DCommAuth = T2DCommAuth.concat(T2DCommand.slice(0,1));
+				T2DCommand = T2DCommand.slice(1);
+			}
+			T2DCommAuth = T2DCommAuth.slice(2, -2);
+			
+			while (T2DCommand.slice(0,1) != config.prefix && T2DCommand !== ""){ //Se elimina el nombre de la persona que ha emitido el mensaje
+				T2DCommand = T2DCommand.slice(1);
+			}
+			if(T2DCommand == "") return;
 
-		while (T2DCommand.slice(0,1) != ":" && T2DCommand !== ""){ //Se elimina el nombre de la persona que ha emitido el mensaje
-			T2DCommAuth = T2DCommAuth.concat(T2DCommand.slice(0,1));
-			T2DCommand = T2DCommand.slice(1);
-		}
-		T2DCommAuth = T2DCommAuth.slice(2, -2);
-		
-		while (T2DCommand.slice(0,1) != config.prefix && T2DCommand !== ""){ //Se elimina el nombre de la persona que ha emitido el mensaje
-			T2DCommand = T2DCommand.slice(1);
-		}
-		if(T2DCommand == "") return;
+			const args = T2DCommand.slice(config.prefix.length).trim().split(/ +/g);
+			const command = args.shift().toLowerCase();
 
-		const args = T2DCommand.slice(config.prefix.length).trim().split(/ +/g);
-		const command = args.shift().toLowerCase();
-
-		if(discBot.users.find('username',T2DCommAuth)!==null){
-			T2DCommAuth = discBot.users.find('username',T2DCommAuth).id; //Se tranforma el username en el id
-			message.member = message.channel.members.find('id',T2DCommAuth);
-			message.content = T2DCommand;		
+			if(discBot.users.find('username',T2DCommAuth)!==null){
+				T2DCommAuth = discBot.users.find('username',T2DCommAuth).id; //Se tranforma el username en el id
+				message.member = message.channel.members.find('id',T2DCommAuth);
+				message.content = T2DCommand;		
+			}
 		}
 		
 	};
 	if (message.content.startsWith(config.prefix)) { //Comandos que empiezan por el prefijo
-	  
 		const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
 		const command = args.shift().toLowerCase();
-		
 		try {
 			let commandFile = require(`./comandos/${command}.js`);
 			commandFile.run(discBot, message, args);
@@ -162,3 +165,9 @@ function resetCon(){
 	lastUserD=0;
 }
 
+function escribirU(discBot){
+	var buf = discBot.channels.find('id','294922283942674444').members.array();
+	fs.writeFile('./conectados', buf, function (err) {
+		if (err) return console.log(err);
+	});
+}

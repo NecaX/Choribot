@@ -71,6 +71,9 @@ empezar a trabajar en él.
 	-Eliminado el comando /E3, almacenado en una nueva carpeta para futuras reutilizaciones.
 	-Ahora el Bot dice quien se conecta y se desconecta a un canal de voz dado, con mecanismo anti flood.
 
+>### Beta 0.8
+	-Añadido comando /conectados que indica aquellos miembros conectados a un canal de voz
+
 ## Proximas implementaciones
 	- Documentar la instalación del bot
 	- Comando $Sorteo

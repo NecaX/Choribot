@@ -1,7 +1,10 @@
 {
   "name": "choribot",
-  "version": "0.0.3",
+  "version": "0.8",
   "description": "Bot de Chorizolandia V2",
+  "engines": {
+    "node": "8.10.0"
+  },
   "main": "bot.js",
   "author": "NecaX",
   "dependencies": {
