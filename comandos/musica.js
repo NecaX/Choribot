@@ -1,5 +1,5 @@
 exports.run = (client, message, args) => {
-	if(message.member.roles.some(r=>["Señor total del universo", "Alto rango del infierno", "Alta ranga dela infierna"].includes(r.name)) ) {
+	if(message.member.roles.some(r=>["Señor total del universo", "Alto rango del infierno", "Alta ranga dela infierna", "Usuarios"].includes(r.name)) ) {
 		if(message.member.voiceChannel){ //Se conecta al canal de voz del que lo llame
 			const Discord = require("discord.js");
 			const command = args[0];
