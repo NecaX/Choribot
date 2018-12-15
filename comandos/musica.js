@@ -5,6 +5,12 @@ exports.run = (client, message, args) => {
 			const command = args[0];
 			const folder = './musica';
 			const fs = require('fs');
+
+			const path = require("path");
+			const Settings = require("../lib/settings/Settings");
+			const settingsPathYAML = path.join(__dirname, "../settings.yaml");
+			const settings = Settings.fromFile(settingsPathYAML);
+
 			switch (command) {
 				case 'on':
 					
@@ -139,7 +145,7 @@ exports.run = (client, message, args) => {
 					var i=1;
 					var nombre='';
 					off = 1;
-					youTube.setKey('AIzaSyDOKNY4b4ryAZ_SZJhbCUyKqSeUNi2cWyo');
+					youTube.setKey(settings.discord.youToken);
 
 					while(args[i]!=null){
 						nombre=nombre.concat(args[i]+' ');

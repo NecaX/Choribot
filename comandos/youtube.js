@@ -4,12 +4,19 @@ exports.run = (client, message, args) => {
 			const Discord = require("discord.js");
 			const command = args[0];
 			const ytdl = require('ytdl-core');
+
+			const path = require("path");
+			const Settings = require("../lib/settings/Settings");
+			const settingsPathYAML = path.join(__dirname, "../settings.yaml");
+			const settings = Settings.fromFile(settingsPathYAML);
+
 			var YouTube = require('youtube-node');
 			var youTube = new YouTube();
 			var i=0;
 			var nombre='';
 			off = 1;
-			youTube.setKey('AIzaSyDOKNY4b4ryAZ_SZJhbCUyKqSeUNi2cWyo');
+		
+			youTube.setKey(settings.discord.youToken);
 
 			switch(args[0]){
 				case 'off':

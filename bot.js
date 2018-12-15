@@ -8,12 +8,12 @@ const DiscordUserMap = require("./lib/discord2telegram/DiscordUserMap");
 const Bridge = require("./lib/bridgestuff/Bridge");
 const BridgeMap = require("./lib/bridgestuff/BridgeMap");
 const Settings = require("./lib/settings/Settings");
-const migrateSettingsToYAML = require("./lib/migrateSettingsToYAML");
-const settingsPathJSON = path.join(__dirname, "settings.json");
+//const migrateSettingsToYAML = require("./lib/migrateSettingsToYAML");
+//const settingsPathJSON = path.join(__dirname, "settings.json");
 const settingsPathYAML = path.join(__dirname, "settings.yaml");
-migrateSettingsToYAML(settingsPathJSON, settingsPathYAML);
+//migrateSettingsToYAML(settingsPathJSON, settingsPathYAML);
 const settings = Settings.fromFile(settingsPathYAML);
-settings.toFile(settingsPathYAML);
+//settings.toFile(settingsPathYAML);
 alrm = setInterval(function(){resetCon()},15000); //Resetear conexiones
 var lastUserC = 0 // Ultimo usuario en conectarse
 var lastUserD = 0 // Ultimo usuuario en desconectarse
