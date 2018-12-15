@@ -10,3 +10,5 @@ data
 Comandos desactualizados
 conectados
 conectados
+data/discord_users.json
+data/latestDiscordMessageIds.json

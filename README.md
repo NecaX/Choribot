@@ -74,6 +74,13 @@ empezar a trabajar en él.
 >### Beta 0.8
 	-Añadido comando /conectados que indica aquellos miembros conectados a un canal de voz
 
+>### Versión 1.0
+	Tras un largo tiempo en desarrollo, por fín pasamos el bot a la versión 1.0. Considero que ya realiza suficientes acciones para ser considerado útil. Estos son los cambios que se han realizado:
+	-Añadido al comando Musica la opciones youtube, que nos permite buscar una canción por su nombre en la plataforma y reproducir la primera encontrada.
+	-Añadido también a su vez el comando Youtube, que hace lo mismo, pero nos permite un acceso más rápido.
+	-Ahora tanto cuando buscamos una canción en la carpeta local como cuando la buscamos en Youtube se va a reproducir en bucle, de forma que parar pararla tendremos que hacer un /musica off o un /youtube off, ambos hacen también lo mismo.
+	-Ayuda actualizada.
+
 ## Proximas implementaciones
 	- Documentar la instalación del bot
 	- Comando $Sorteo

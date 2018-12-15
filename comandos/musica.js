@@ -19,7 +19,7 @@ exports.run = (client, message, args) => {
 					client.channels.find('id','373208912545185809').setTopic('Se esta reproduciendo: '+musica[aleatorio]).catch(console.error);
 					message.member.voiceChannel.join().then(connection => {
 						//message.reply('Listo para la marcha')
-						const dispatcher = connection.playFile('./musica/'+musica[aleatorio]);
+						dispatcher = connection.playFile('./musica/'+musica[aleatorio]);
 						
 						dispatcher.on('end', () => {
 							//message.channel.send('Fin');
@@ -60,7 +60,7 @@ exports.run = (client, message, args) => {
 					}
 				break;
 				case 'buscar':
-					off = 1;
+					off = 0;
 					var i=1;
 					var nombre='';
 					var cancion;
@@ -78,19 +78,31 @@ exports.run = (client, message, args) => {
 										
 					if(cancion!=null){
 						if (message.member.voiceChannel) {
-							message.member.voiceChannel.leave();
+							//message.member.voiceChannel.leave();
 						} else {
 							message.reply('Necesitas estar en un canal de voz primero');
 						}
 						client.channels.find('id','373208912545185809').send('Se esta reproduciendo: '+cancion).catch(console.error);
 						client.channels.find('id','373208912545185809').setTopic('Se esta reproduciendo: '+cancion).catch(console.error);
 						message.member.voiceChannel.join().then(connection => {
-							const dispatcher = connection.playFile('./musica/'+cancion);	
+							dispatcher = connection.playFile('./musica/'+cancion);	
+
+
+							dispatcher.on('end', () => {
+								if(off == 0){
+									try {
+										let commandFile = require(`./musica.js`);
+										commandFile.run(client, message, args);
+									} catch (err) {
+										console.error(err);
+									}
+								}
+							});
 						});
 					}else{
 						message.channel.send('No se ha encontrado ninguna canción que coincida');
-					}
-					off=0;
+					}			
+					
 				break;
 				case 'lista':
 					var canciones = '';
@@ -119,6 +131,46 @@ exports.run = (client, message, args) => {
 						}});
 						
 					});	
+				break;
+				case 'youtube':
+					const ytdl = require('ytdl-core');
+					var YouTube = require('youtube-node');
+					var youTube = new YouTube();
+					var i=1;
+					var nombre='';
+					off = 1;
+					youTube.setKey('AIzaSyDOKNY4b4ryAZ_SZJhbCUyKqSeUNi2cWyo');
+
+					while(args[i]!=null){
+						nombre=nombre.concat(args[i]+' ');
+						i++;
+					}
+					youTube.search(nombre, 2, function(error, result) {
+						if (error) {
+							console.log(error);
+						}
+						else {
+							var url = 'https://www.youtube.com/watch?v='+result.items[0].id.videoId;
+							const streamOptions = { seek: 0, volume: 1 };
+							message.member.voiceChannel.join().then(connection => {
+								const stream = ytdl(url, { filter : 'audioonly' });
+								const dispatcher = connection.playStream(stream, streamOptions);
+								off=0;
+								dispatcher.on('end', () => {
+									if(off == 0){
+										try {
+											let commandFile = require(`./musica.js`);
+											commandFile.run(client, message, args);
+										} catch (err) {
+											console.error(err);
+										}
+									}
+								});
+
+							}).catch(console.error);
+						}
+					  });
+					
 				break;
 				default:
 					message.channel.send('no se han reconocido los parametros');

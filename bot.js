@@ -101,11 +101,10 @@ discBot.login(config.token);
 //funciones
 
 function ejecutarcomandos(message){
-	
 	if (message.author.bot) { //Permitir ejecutar comandos de discord desde Telegram
 		var T2DCommand=message.content;
 		var T2DCommAuth = "";
-		if (message.content.startsWith(!config.prefix)) {
+		if (!message.content.startsWith(config.prefix)) {
 			while (T2DCommand.slice(0,1) != ":" && T2DCommand !== ""){ //Se elimina el nombre de la persona que ha emitido el mensaje
 				T2DCommAuth = T2DCommAuth.concat(T2DCommand.slice(0,1));
 				T2DCommand = T2DCommand.slice(1);
@@ -127,6 +126,7 @@ function ejecutarcomandos(message){
 			}
 		}
 		
+		
 	};
 	if (message.content.startsWith(config.prefix)) { //Comandos que empiezan por el prefijo
 		const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
@@ -134,11 +134,11 @@ function ejecutarcomandos(message){
 		try {
 			let commandFile = require(`./comandos/${command}.js`);
 			commandFile.run(discBot, message, args);
-		  } catch (err) {
+		} catch (err) {
 			console.error(err);
-		  }
+		}
 	}
-	
+
 	if (message.content.toLowerCase().startsWith('choribot')) { //Comandos conversacionales
 		
 		const command = message.content.toLowerCase();
