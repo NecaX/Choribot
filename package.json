@@ -9,11 +9,8 @@
   "main": "bot.js",
   "author": "NecaX",
   "dependencies": {
-<<<<<<< HEAD
     "bufferutil": "^3.0.3",
     "cryptiles": "^4.1.3",
-=======
->>>>>>> parent of 3cdde82... Dependencias
     "deasync": "^0.1.12",
     "discord.js": "^11.3.2",
     "enmap": "^0.1.2",
