@@ -3,6 +3,7 @@ exports.run = (client, message, args) => {
 		if(message.member.voiceChannel){ //Se conecta al canal de voz del que lo llame
 			const Discord = require("discord.js");
 			const command = args[0];
+			const fs = require('fs');
 			const ytdl = require('ytdl-core');
 
 			const path = require("path");
@@ -39,9 +40,11 @@ exports.run = (client, message, args) => {
 						}
 						else {
 							var url = 'https://www.youtube.com/watch?v='+result.items[0].id.videoId;
+							console.log(url);
 							const streamOptions = { seek: 0, volume: 1 };
 							message.member.voiceChannel.join().then(connection => {
 								const stream = ytdl(url, { filter : 'audioonly' });
+								aaa=1;
 								const dispatcher = connection.playStream(stream, streamOptions);
 								off=0;
 								dispatcher.on('end', () => {
