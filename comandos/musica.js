@@ -68,16 +68,16 @@ exports.run = (client, message, args) => {
 				case 'buscar':
 					off = 0;
 					var i=1;
-					var nombre='';
+					var nombre="";
 					var cancion;
 					while(args[i]!=null){
-						nombre=nombre.concat(args[i]+' ');
+						nombre=nombre.concat(" "+args[i]);
 						i++;
 					}
-					nombre=nombre.split(" ")[0];
-					var lista;
+					nombre=nombre.slice(1, nombre.length)
+					var lista;					
 					fs.readdirSync(folder).forEach(file => {
-						if(file.toLowerCase().includes(nombre.toLowerCase())){
+						if(file.toLowerCase().slice(0, file.length-4).includes(nombre.toLowerCase())){
 							cancion=file;
 						}
 					});
