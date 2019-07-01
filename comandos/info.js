@@ -4,6 +4,8 @@ exports.run = (client, message, args) => {
 		message.author.send("ID Server - "+message.guild.id);
 		message.author.send("Nombre usuario cliente - "+client.user.username);
 		message.author.send("Url imagen usuario cliente - "+client.user.avatarURL);
+		
+
 	}
 }
 

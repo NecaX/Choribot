@@ -21,6 +21,8 @@ var off = 0; //musica
 var llamarp = 0; //llamar
 var alrm = null;
 const fs = require('fs');
+var http = require('http');
+var bat = require('./bat');
 
 // Telegram
 const { BotAPI } = require("teleapiwrapper");
@@ -81,18 +83,32 @@ discBot.on("messageUpdate", (oldMessage, newMessage) => {
 });
 
 
-discBot.on("voiceStateUpdate", (olduser,newuser) => { //Indica que alguien se ha conectado al canal de voz principal
-	if(newuser.voiceChannelID != null && olduser.voiceChannelID == null && newuser.id != lastUserC && newuser.id != 357503738287489024){
-		discBot.channels.find('id','294922283942674443').send(newuser.user.username+' Se ha conectado, ¡Bienvenido!', {tts: true});
-		discBot.channels.find('id','294922283942674443').bulkDelete(1);
-		lastUserC = newuser.id;
-		escribirU(discBot);
-	}
-	if(newuser.voiceChannelID == null && olduser.voiceChannelID != null && olduser.id != lastUserD && newuser.id != 357503738287489024){
+discBot.on("voiceStateUpdate", (olduser,newuser) => { //Indica que alguien se ha conectado al canal de voz principal	
+	if(newuser.voiceChannel == null && (olduser.voiceChannel.name == 'Mercado de la Sal' || olduser.voiceChannel.name == 'Chorizo TV')){
 		discBot.channels.find('id','294922283942674443').send(olduser.user.username+' Se ha desconectado', {tts: true});
 		discBot.channels.find('id','294922283942674443').bulkDelete(1);		
 		lastUserD = olduser.id;
 		escribirU(discBot);
+	}
+	if(newuser.voiceChannel != null){
+		if((newuser.voiceChannel.name == 'Mercado de la Sal' || newuser.voiceChannel.name == 'Chorizo TV' ) && olduser.voiceChannel == null){
+			if(newuser.user.username == 'Iceword01'){
+				discBot.channels.find('name','teletexto').send('Javo se ha conectado', {tts: true});
+				discBot.channels.find('id','294922283942674443').send(newuser.user.username+' Se ha conectado', {tts: true});
+			} else{
+				discBot.channels.find('name','teletexto').send(newuser.user.username+' Se ha conectado', {tts: true});
+				discBot.channels.find('id','294922283942674443').send(newuser.user.username+' Se ha conectado', {tts: true});
+			}
+			discBot.channels.find('id','294922283942674443').bulkDelete(1);
+			discBot.channels.find('name','teletexto').bulkDelete(1);
+			lastUserC = newuser.id;
+			escribirU(discBot);
+		}
+		if(discBot.channels.find('id','360558674575622149').members.array().length == 1 && newuser.voiceChannel.name == 'Chorizo TV' && (olduser.voiceChannel == null || olduser.voiceChannel.name != 'Chorizo TV')){
+			//discBot.channels.find('id','294922283942674443').send(newuser.user.username+' Se ha ido a ver la tele, ¿por qué no te unes? - https://discord.gg/jvxS47P');
+			lastUserC = newuser.id;
+			escribirU(discBot);
+		}
 	}
 });
 
@@ -131,6 +147,7 @@ function ejecutarcomandos(message){
 	if (message.content.startsWith(config.prefix)) { //Comandos que empiezan por el prefijo
 		const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
 		const command = args.shift().toLowerCase();
+		console.log(command);
 		try {
 			let commandFile = require(`./comandos/${command}.js`);
 			commandFile.run(discBot, message, args);
@@ -167,7 +184,20 @@ function resetCon(){
 
 function escribirU(discBot){
 	var buf = discBot.channels.find('id','294922283942674444').members.array();
-	fs.writeFile('./conectados', buf, function (err) {
-		if (err) return console.log(err);
-	});
+	if(buf.length == 0){
+		fs.writeFile('./conectados', '', function (err) {
+			if (err) return console.log(err);
+		});
+	}
+	for (var i=0; i<buf.length; i++){
+		fs.writeFile('./conectados', '', function (err) {
+			if (err) return console.log(err);
+		});
+		fs.appendFile('./conectados', buf[i].user.username+'\n', function (err) {
+			if (err) return console.log(err);
+		});
+	}
+	var spawn = require('child_process').spawn,
+	ls    = spawn('cmd.exe', ['/c', 'subir.bat']);
 }
+
