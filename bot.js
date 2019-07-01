@@ -23,6 +23,7 @@ var alrm = null;
 const fs = require('fs');
 var http = require('http');
 var bat = require('./bat');
+var berenjena = false;
 
 // Telegram
 const { BotAPI } = require("teleapiwrapper");
@@ -75,6 +76,9 @@ discBot.on("guildMemberAdd", (member) => {
 
 
 discBot.on("message", (message) => {
+	if(berenjena == true){
+		message.react('🍆').catch(console.error);
+	}
 	ejecutarcomandos(message);	
 });
 
@@ -147,6 +151,12 @@ function ejecutarcomandos(message){
 	if (message.content.startsWith(config.prefix)) { //Comandos que empiezan por el prefijo
 		const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
 		const command = args.shift().toLowerCase();
+		if (command == 'berenjena' && args == 'on'){
+			berenjena = true;
+		}
+		if (command == 'berenjena' && args == 'off'){
+			berenjena = false;
+		}
 		console.log(command);
 		try {
 			let commandFile = require(`./comandos/${command}.js`);
