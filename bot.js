@@ -175,9 +175,6 @@ function ejecutarcomandos(message){
 				message.channel.send('Si señor '+message.author+' , me encuentro en tu mismo plano', {tts: true});
 			break;
 			
-			case 'choribot, eres del pp?':
-				message.channel.send('Quita, quita, que ajco, no?', {tts: true});
-			break;
 			
 			case 'choribot prueba':
 				message.channel.send(message.channel.id);
