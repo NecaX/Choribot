@@ -88,23 +88,23 @@ discBot.on("messageUpdate", (oldMessage, newMessage) => {
 
 
 discBot.on("voiceStateUpdate", (olduser,newuser) => { //Indica que alguien se ha conectado al canal de voz principal	
-	if(newuser.voiceChannel == null && (olduser.voiceChannel.name == 'Mercado de la Sal' || olduser.voiceChannel.name == 'Chorizo TV')){
-		discBot.channels.find('id','294922283942674443').send(olduser.user.username+' Se ha desconectado', {tts: true});
-		discBot.channels.find('id','294922283942674443').bulkDelete(1);		
+	if(newuser.voiceChannel == null && (olduser.voiceChannel.name == 'Mercado de la Sal' || olduser.voiceChannel.name == 'Callejon de los negros' || olduser.voiceChannel.name == 'Las puertas')){
+		discBot.channels.find('name','patalking').send(olduser.user.username+' Se ha desconectado', {tts: true});
+		discBot.channels.find('name','patalking').bulkDelete(1);		
 		lastUserD = olduser.id;
 		escribirU(discBot);
 	}
 	if(newuser.voiceChannel != null){
-		if((newuser.voiceChannel.name == 'Mercado de la Sal' || newuser.voiceChannel.name == 'Chorizo TV' ) && olduser.voiceChannel == null){
+		if((newuser.voiceChannel.name == 'patalking' || newuser.voiceChannel.name == 'Chorizo TV' ) && olduser.voiceChannel == null){
 			if(newuser.user.username == 'Iceword01'){
-				discBot.channels.find('name','teletexto').send('Javo se ha conectado', {tts: true});
-				discBot.channels.find('id','294922283942674443').send(newuser.user.username+' Se ha conectado', {tts: true});
+				discBot.channels.find('name','patalking').send('Javo se ha conectado', {tts: true});
+				//discBot.channels.find('id','294922283942674443').send(newuser.user.username+' Se ha conectado', {tts: true});
 			} else{
-				discBot.channels.find('name','teletexto').send(newuser.user.username+' Se ha conectado', {tts: true});
-				discBot.channels.find('id','294922283942674443').send(newuser.user.username+' Se ha conectado', {tts: true});
+				discBot.channels.find('name','patalking').send(newuser.user.username+' Se ha conectado', {tts: true});
+				//discBot.channels.find('id','294922283942674443').send(newuser.user.username+' Se ha conectado', {tts: true});
 			}
-			discBot.channels.find('id','294922283942674443').bulkDelete(1);
-			discBot.channels.find('name','teletexto').bulkDelete(1);
+			//discBot.channels.find('id','294922283942674443').bulkDelete(1);
+			discBot.channels.find('name','patalking').bulkDelete(1);
 			lastUserC = newuser.id;
 			escribirU(discBot);
 		}
@@ -144,9 +144,7 @@ function ejecutarcomandos(message){
 				message.member = message.channel.members.find('id',T2DCommAuth);
 				message.content = T2DCommand;		
 			}
-		}
-		
-		
+		}		
 	};
 	if (message.content.startsWith(config.prefix)) { //Comandos que empiezan por el prefijo
 		const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
