@@ -32,7 +32,7 @@ var berenjena = false;
 
 // Discord
 const Discord = require("discord.js");
-const discordSetup = require("./lib/discord2telegram/setup");
+//const discordSetup = require("./lib/discord2telegram/setup");
 const discBot = new Discord.Client();
 const config = settings.discord;
 
@@ -121,31 +121,31 @@ discBot.login(config.token);
 //funciones
 
 function ejecutarcomandos(message){
-	if (message.author.bot) { //Permitir ejecutar comandos de discord desde Telegram
-		var T2DCommand=message.content;
-		var T2DCommAuth = "";
-		if (!message.content.startsWith(config.prefix)) {
-			while (T2DCommand.slice(0,1) != ":" && T2DCommand !== ""){ //Se elimina el nombre de la persona que ha emitido el mensaje
-				T2DCommAuth = T2DCommAuth.concat(T2DCommand.slice(0,1));
-				T2DCommand = T2DCommand.slice(1);
-			}
-			T2DCommAuth = T2DCommAuth.slice(2, -2);
+	// if (message.author.bot) { //Permitir ejecutar comandos de discord desde Telegram
+	// 	var T2DCommand=message.content;
+	// 	var T2DCommAuth = "";
+	// 	if (!message.content.startsWith(config.prefix)) {
+	// 		while (T2DCommand.slice(0,1) != ":" && T2DCommand !== ""){ //Se elimina el nombre de la persona que ha emitido el mensaje
+	// 			T2DCommAuth = T2DCommAuth.concat(T2DCommand.slice(0,1));
+	// 			T2DCommand = T2DCommand.slice(1);
+	// 		}
+	// 		T2DCommAuth = T2DCommAuth.slice(2, -2);
 			
-			while (T2DCommand.slice(0,1) != config.prefix && T2DCommand !== ""){ //Se elimina el nombre de la persona que ha emitido el mensaje
-				T2DCommand = T2DCommand.slice(1);
-			}
-			if(T2DCommand == "") return;
+	// 		while (T2DCommand.slice(0,1) != config.prefix && T2DCommand !== ""){ //Se elimina el nombre de la persona que ha emitido el mensaje
+	// 			T2DCommand = T2DCommand.slice(1);
+	// 		}
+	// 		if(T2DCommand == "") return;
 
-			const args = T2DCommand.slice(config.prefix.length).trim().split(/ +/g);
-			const command = args.shift().toLowerCase();
+	// 		const args = T2DCommand.slice(config.prefix.length).trim().split(/ +/g);
+	// 		const command = args.shift().toLowerCase();
 
-			if(discBot.users.find('username',T2DCommAuth)!==null){
-				T2DCommAuth = discBot.users.find('username',T2DCommAuth).id; //Se tranforma el username en el id
-				message.member = message.channel.members.find('id',T2DCommAuth);
-				message.content = T2DCommand;		
-			}
-		}		
-	};
+	// 		if(discBot.users.find('username',T2DCommAuth)!==null){
+	// 			T2DCommAuth = discBot.users.find('username',T2DCommAuth).id; //Se tranforma el username en el id
+	// 			message.member = message.channel.members.find('id',T2DCommAuth);
+	// 			message.content = T2DCommand;		
+	// 		}
+	// 	}		
+	// };
 	if (message.content.startsWith(config.prefix)) { //Comandos que empiezan por el prefijo
 		const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
 		const command = args.shift().toLowerCase();
