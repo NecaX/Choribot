@@ -108,7 +108,7 @@ discBot.on("voiceStateUpdate", (olduser,newuser) => { //Indica que alguien se ha
 			lastUserC = newuser.id;
 			escribirU(discBot);
 		}
-		if(discBot.channels.find('id','360558674575622149').members.array().length == 1 && newuser.voiceChannel.name == 'Chorizo TV' && (olduser.voiceChannel == null || olduser.voiceChannel.name != 'Chorizo TV')){
+		if(discBot.channels.find('name','Mercado de la Sal').members.array().length == 1 && newuser.voiceChannel.name == 'Chorizo TV' && (olduser.voiceChannel == null || olduser.voiceChannel.name != 'Chorizo TV')){
 			//discBot.channels.find('id','294922283942674443').send(newuser.user.username+' Se ha ido a ver la tele, ¿por qué no te unes? - https://discord.gg/jvxS47P');
 			lastUserC = newuser.id;
 			escribirU(discBot);
@@ -188,7 +188,7 @@ function resetCon(){
 }
 
 function escribirU(discBot){
-	var buf = discBot.channels.find('id','294922283942674444').members.array();
+	var buf = discBot.channels.find('name','Mercado de la Sal').members.array();
 	if(buf.length == 0){
 		fs.writeFile('./conectados', '', function (err) {
 			if (err) return console.log(err);
