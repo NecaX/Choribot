@@ -3,10 +3,10 @@
 //General
 const path = require("path");
 const Application = require("./lib/Application");
-const MessageMap = require("./lib/MessageMap");
-const DiscordUserMap = require("./lib/discord2telegram/DiscordUserMap");
-const Bridge = require("./lib/bridgestuff/Bridge");
-const BridgeMap = require("./lib/bridgestuff/BridgeMap");
+//const MessageMap = require("./lib/MessageMap");
+// const DiscordUserMap = require("./lib/discord2telegram/DiscordUserMap");
+// const Bridge = require("./lib/bridgestuff/Bridge");
+// const BridgeMap = require("./lib/bridgestuff/BridgeMap");
 const Settings = require("./lib/settings/Settings");
 //const migrateSettingsToYAML = require("./lib/migrateSettingsToYAML");
 //const settingsPathJSON = path.join(__dirname, "settings.json");
@@ -26,9 +26,9 @@ var bat = require('./bat');
 var berenjena = false;
 
 // Telegram
-const { BotAPI } = require("teleapiwrapper");
-const telegramSetup = require("./lib/telegram2discord/setup");
-const tgBot = new BotAPI(settings.telegram.token);
+// const { BotAPI } = require("teleapiwrapper");
+// const telegramSetup = require("./lib/telegram2discord/setup");
+// const tgBot = new BotAPI(settings.telegram.token);
 
 // Discord
 const Discord = require("discord.js");
@@ -38,21 +38,21 @@ const config = settings.discord;
 
 
 //Puente
-try {
-	const dcUsers = new DiscordUserMap(path.join(__dirname, "data", "discord_users.json"));
-	const messageMap = new MessageMap();
-	const bridgeMap = new BridgeMap(settings.bridges.map((bridgeSettings) => new Bridge(bridgeSettings)));
+// try {
+// 	const dcUsers = new DiscordUserMap(path.join(__dirname, "data", "discord_users.json"));
+// 	const messageMap = new MessageMap();
+// 	const bridgeMap = new BridgeMap(settings.bridges.map((bridgeSettings) => new Bridge(bridgeSettings)));
 
-	/*********************
-	 * Set up the bridge *
-	 *********************/
+// 	/*********************
+// 	 * Set up the bridge *
+// 	 *********************/
 
-	discordSetup(discBot, tgBot, dcUsers, messageMap, bridgeMap, settings);
-	telegramSetup(tgBot, discBot, dcUsers, messageMap, bridgeMap, settings);
-} catch (err) {
-	Application.logger.error(err);
-	throw err;
-}
+// 	discordSetup(discBot, tgBot, dcUsers, messageMap, bridgeMap, settings);
+// 	telegramSetup(tgBot, discBot, dcUsers, messageMap, bridgeMap, settings);
+// } catch (err) {
+// 	Application.logger.error(err);
+// 	throw err;
+// }
 
 
 discBot.on("ready", () => {
@@ -92,7 +92,7 @@ discBot.on("voiceStateUpdate", (olduser,newuser) => { //Indica que alguien se ha
 		discBot.channels.find('name','patalking').send(olduser.user.username+' Se ha desconectado', {tts: true});
 		discBot.channels.find('name','patalking').bulkDelete(1);		
 		lastUserD = olduser.id;
-		escribirU(discBot);
+		//escribirU(discBot);
 	}
 	if(newuser.voiceChannel != null){
 		if((newuser.voiceChannel.name == 'patalking' || newuser.voiceChannel.name == 'Chorizo TV' ) && olduser.voiceChannel == null){
@@ -106,12 +106,12 @@ discBot.on("voiceStateUpdate", (olduser,newuser) => { //Indica que alguien se ha
 			//discBot.channels.find('id','294922283942674443').bulkDelete(1);
 			discBot.channels.find('name','patalking').bulkDelete(1);
 			lastUserC = newuser.id;
-			escribirU(discBot);
+			//escribirU(discBot);
 		}
 		if(discBot.channels.find('name','Mercado de la Sal').members.array().length == 1 && newuser.voiceChannel.name == 'Chorizo TV' && (olduser.voiceChannel == null || olduser.voiceChannel.name != 'Chorizo TV')){
 			//discBot.channels.find('id','294922283942674443').send(newuser.user.username+' Se ha ido a ver la tele, ¿por qué no te unes? - https://discord.gg/jvxS47P');
 			lastUserC = newuser.id;
-			escribirU(discBot);
+			//escribirU(discBot);
 		}
 	}
 });
