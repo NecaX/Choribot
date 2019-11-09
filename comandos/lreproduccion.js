@@ -11,7 +11,7 @@ exports.run = (client, message, args) => {
 
 			var YouTube = require('youtube-node');
 			var youTube = new YouTube();
-			youTube.setKey('AIzaSyCtAb5jFo1u9EByX9hDOiQyeb61Nujz8xg');
+			youTube.setKey('');
 			var i=0;
 			var nombre='';
 			off = 1;
