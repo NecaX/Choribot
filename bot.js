@@ -95,7 +95,7 @@ discBot.on("voiceStateUpdate", (olduser,newuser) => { //Indica que alguien se ha
 		//escribirU(discBot);
 	}
 	if(newuser.voiceChannel != null){
-		if((newuser.voiceChannel.name == 'patalking' || newuser.voiceChannel.name == 'Chorizo TV' ) && olduser.voiceChannel == null){
+		if((newuser.voiceChannel.name == 'Mercado de la Sal' || newuser.voiceChannel.name == 'Callejon de los negros' || olduser.voiceChannel.name == 'Las puertas') && olduser.voiceChannel == null){
 			if(newuser.user.username == 'Iceword01'){
 				discBot.channels.find('name','patalking').send('Javo se ha conectado', {tts: true});
 				//discBot.channels.find('id','294922283942674443').send(newuser.user.username+' Se ha conectado', {tts: true});
