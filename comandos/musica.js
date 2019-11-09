@@ -7,9 +7,7 @@ exports.run = (client, message, args) => {
 			const fs = require('fs');
 
 			const path = require("path");
-			const Settings = require("../lib/settings/Settings");
-			const settingsPathYAML = path.join(__dirname, "../settings.yaml");
-			const settings = Settings.fromFile(settingsPathYAML);
+			const config = require("../config.json");
 
 			switch (command) {
 				case 'on':
@@ -145,7 +143,7 @@ exports.run = (client, message, args) => {
 					var i=1;
 					var nombre='';
 					off = 1;
-					youTube.setKey(settings.discord.youToken);
+					youTube.setKey(config.youToken);
 
 					while(args[i]!=null){
 						nombre=nombre.concat(args[i]+' ');

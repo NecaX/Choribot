@@ -7,17 +7,16 @@ exports.run = (client, message, args) => {
 			const ytdl = require('ytdl-core');
 
 			const path = require("path");
-			const Settings = require("../lib/settings/Settings");
-			const settingsPathYAML = path.join(__dirname, "../settings.yaml");
-			const settings = Settings.fromFile(settingsPathYAML);
+			const config = require("../config.json");
 
 			var YouTube = require('youtube-node');
 			var youTube = new YouTube();
+			youTube.setKey('AIzaSyCtAb5jFo1u9EByX9hDOiQyeb61Nujz8xg');
 			var i=0;
 			var nombre='';
 			off = 1;
 		
-			youTube.setKey(settings.discord.youToken);
+			
 
 			switch(args[0]){
 				case 'off':
@@ -33,6 +32,7 @@ exports.run = (client, message, args) => {
 					while(args[i]!=null){
 						nombre=nombre.concat(args[i]+' ');
 						i++;
+						
 					}
 					youTube.search(nombre, 2, function(error, result) {
 						if (error) {

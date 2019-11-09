@@ -80,6 +80,9 @@ Bot pensado para ser usado comunidades de Discord.
 	-Ahora tanto cuando buscamos una canción en la carpeta local como cuando la buscamos en Youtube se va a reproducir en bucle, de forma que parar pararla tendremos que hacer un /musica off o un /youtube off, ambos hacen también lo mismo.
 	-Ayuda actualizada.
 
+### Versión 1.1
+	-Limpieza de paquetes para facilitar lanzamiento en Docker.
+
 ## Próximas implementaciones
 	- Documentar la instalación del bot
 	- Comando $Sorteo

@@ -7,9 +7,7 @@ exports.run = (client, message, args) => {
 			const ytdl = require('ytdl-core');
 
 			const path = require("path");
-			const Settings = require("../lib/settings/Settings");
-			const settingsPathYAML = path.join(__dirname, "../settings.yaml");
-			const settings = Settings.fromFile(settingsPathYAML);
+			const config = require("../config.json");
 
 			var YouTube = require('youtube-node');
 			var youTube = new YouTube();
@@ -17,7 +15,7 @@ exports.run = (client, message, args) => {
 			var nombre='';
 			off = 1;
 		
-			youTube.setKey(settings.discord.youToken);
+			youTube.setKey(config.youToken);
 
 			switch(args[0]){
 				case 'off':
