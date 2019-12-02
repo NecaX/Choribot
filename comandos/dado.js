@@ -1,7 +1,7 @@
 exports.run = (client, message, args) => {
 	if (args[0] != null) {
 		var str = args[0].toLowerCase();
-		var patt = /^[1-9][0-9]*d[1-9][0-9]*$/ //Patron que comprueba que el dado introducido es correcto
+		var patt = /^[1-9][0-9]{10}d[1-9][0-9]{10}$/ //Patron que comprueba que el dado introducido es correcto
 		var mostrar = '';
 		if (!patt.test(str)) {
 			message.channel.send('Dado invalido, el comando es $dado (numero de dados)d(caras del dado)');

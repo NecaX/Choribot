@@ -3,6 +3,7 @@
 //General
 const path = require("path");
 
+
 alrm = setInterval(function(){resetCon()},15000); //Resetear conexiones
 var lastUserC = 0 // Ultimo usuario en conectarse
 var lastUserD = 0 // Ultimo usuuario en desconectarse
@@ -38,6 +39,9 @@ discBot.on("guildMemberAdd", (member) => {
 
 
 discBot.on("message", (message) => {
+	if(message.author.bot == true && message.author.username == 'GitHub' && message.content.includes('[Choribot:master]')){
+
+	}
 	if(berenjena == true){
 		message.react('🍆').catch(console.error);
 	}
