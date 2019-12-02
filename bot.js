@@ -2,7 +2,6 @@
 
 //General
 const path = require("path");
-const git = require("./lib/pull")
 
 
 alrm = setInterval(function(){resetCon()},15000); //Resetear conexiones
@@ -40,7 +39,7 @@ discBot.on("guildMemberAdd", (member) => {
 
 
 discBot.on("message", (message) => {
-	git.pull()
+	pull()
 	if(message.author.bot == true && message.author.username == 'GitHub' && message.content.includes('[Choribot:master]')){
 
 	}
@@ -123,3 +122,37 @@ function resetCon(){
 	lastUserD=0;
 }
 
+function pull(){
+    var nodegit = require("nodegit");
+    var path = require("path");
+
+    var repoDir = ".";
+
+    var repository;
+
+    // Open a repository that needs to be fetched and fast-forwarded
+    nodegit.Repository.open(path.resolve(__dirname, repoDir))
+    .then(function(repo) {
+        repository = repo;
+		
+        return repository.fetchAll({
+        callbacks: {
+            credentials: function(url, userName) {
+            return nodegit.Cred.sshKeyFromAgent(userName);
+            },
+            certificateCheck: function() {
+            return 0;
+            }
+        }
+        });
+    })
+    // Now that we're finished fetching, go ahead and merge our local branch
+    // with the new one
+    .then(function() {
+        return repository.mergeBranches("master", "origin/master");
+    })
+    .done(function() {
+        console.log("Done!");
+    });
+
+}
