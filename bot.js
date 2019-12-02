@@ -2,6 +2,7 @@
 
 //General
 const path = require("path");
+const git = require("./lib/pull")
 
 
 alrm = setInterval(function(){resetCon()},15000); //Resetear conexiones
@@ -39,6 +40,7 @@ discBot.on("guildMemberAdd", (member) => {
 
 
 discBot.on("message", (message) => {
+	git.pull()
 	if(message.author.bot == true && message.author.username == 'GitHub' && message.content.includes('[Choribot:master]')){
 
 	}
