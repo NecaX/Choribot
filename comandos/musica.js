@@ -3,7 +3,7 @@ exports.run = (client, message, args) => {
 		if(message.member.voiceChannel){ //Se conecta al canal de voz del que lo llame
 			const Discord = require("discord.js");
 			const command = args[0];
-			const folder = './musica';
+			const folder = './Otros/musica';
 			const fs = require('fs');
 
 			const path = require("path");
@@ -23,7 +23,7 @@ exports.run = (client, message, args) => {
 					client.channels.find('id','373208912545185809').setTopic('Se esta reproduciendo: '+musica[aleatorio]).catch(console.error);
 					message.member.voiceChannel.join().then(connection => {
 						//message.reply('Listo para la marcha')
-						dispatcher = connection.playFile('./musica/'+musica[aleatorio]);
+						dispatcher = connection.playFile('./Otros/musica/'+musica[aleatorio]);
 						
 						dispatcher.on('end', () => {
 							//message.channel.send('Fin');
@@ -89,7 +89,7 @@ exports.run = (client, message, args) => {
 						client.channels.find('id','373208912545185809').send('Se esta reproduciendo: '+cancion).catch(console.error);
 						client.channels.find('id','373208912545185809').setTopic('Se esta reproduciendo: '+cancion).catch(console.error);
 						message.member.voiceChannel.join().then(connection => {
-							dispatcher = connection.playFile('./musica/'+cancion);	
+							dispatcher = connection.playFile('./Otros/musica'+cancion);	
 
 
 							dispatcher.on('end', () => {
