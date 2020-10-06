@@ -15,3 +15,5 @@ data/latestDiscordMessageIds.json
 data/latestDiscordMessageIds.json
 conectados
 comandos/cerveza.js
+./user-audio
+./tail
