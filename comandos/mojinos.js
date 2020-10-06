@@ -1,8 +1,9 @@
 exports.run = (client, message, args) => {
-	if(message.member.roles.some(r=>["Señor total del universo", "Alto rango del infierno", "Alta ranga dela infierna", "Usuarios"].includes(r.name)) ) {
-		if(message.member.voiceChannel){ //Se conecta al canal de voz del que lo llame
+	if(message.member.roles.cache.some(r=>["Señor total del universo", "Alto rango del infierno", "Alta ranga dela infierna", "Usuarios"].includes(r.name)) ) {
+		if(message.member.voice.channel){ //Se conecta al canal de voz del que lo llame
 			const Discord = require("discord.js");
 			const command = args[0];
+			// const folder = '../Datos/mojinos';
 			const folder = './Otros/mojinos';
 			const fs = require('fs');
 
@@ -16,17 +17,17 @@ exports.run = (client, message, args) => {
 				});
 				
 				var aleatorio = Math.floor((Math.random() * musica.length))
-				client.channels.find('id','373208912545185809').send('Se esta reproduciendo: '+musica[aleatorio]).catch(console.error);
-				client.channels.find('id','373208912545185809').setTopic('Se esta reproduciendo: '+musica[aleatorio]).catch(console.error);
-				message.member.voiceChannel.join().then(connection => {
+				client.channels.fetch('373208912545185809').then(channel => channel.send('Se esta reproduciendo: '+musica[aleatorio]).catch(console.error));
+				client.channels.fetch('373208912545185809').then(channel => channel.setTopic('Se esta reproduciendo: '+musica[aleatorio]).catch(console.error));
+				message.member.voice.channel.join().then(connection => {
 					//message.reply('Listo para la marcha')
-					dispatcher = connection.playFile('./Otros/musica/'+musica[aleatorio]);
+					dispatcher = connection.play(folder+'/'+musica[aleatorio]);
 					
 					dispatcher.on('end', () => {
 						//message.channel.send('Fin');
 						if(off == 0){
 							try {
-								let commandFile = require(`./musica.js`);
+								let commandFile = require(`./mojinos.js`);
 								commandFile.run(client, message, args);
 							} catch (err) {
 								console.error(err);

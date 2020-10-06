@@ -1,5 +1,5 @@
 exports.run = (client, message, args) => {
-	if(message.member.roles.some(r=>["Señor total del universo", "Alto rango del infierno", "Alta ranga dela infierna"].includes(r.name)) ) {
+	if(message.member.roles.cache.some(r=>["Señor total del universo", "Alto rango del infierno", "Alta ranga dela infierna"].includes(r.name)) ) {
 		var destino = args[0];
 
 		if(destino == 'parar'){
@@ -7,7 +7,7 @@ exports.run = (client, message, args) => {
 			message.channel.send('Se ha dejado de llamar');
 		}else{
 			message.channel.send('Se va a llamar a '+destino);
-			if((client.users.find('username',destino)==null) && (client.users.find('username',message.mentions.users.first().username)==null)){
+			if((client.users.cache.find(user => user.username === destino)==null) && (client.users.cache.find(user => user.username === message.mentions.users.first().username)==null)){
 				message.channel.send('El nombre de usuario no existe').catch(console.error);
 				return;
 			}

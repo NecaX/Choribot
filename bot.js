@@ -4,6 +4,7 @@
 const path = require("path");
 
 
+
 alrm = setInterval(function(){resetCon()},15000); //Resetear conexiones
 var lastUserC = 0 // Ultimo usuario en conectarse
 var lastUserD = 0 // Ultimo usuuario en desconectarse
@@ -33,12 +34,12 @@ discBot.on("ready", () => {
 discBot.on("guildMemberAdd", (member) => {
   console.log(`Nuevo Usuario "${member.user.username}" Ha entrado a "${member.guild.name}"` );
   
-  discBot.channels.find(val => val.name === 'patalking').send(member.user.username+' ha entrado al servidor', {tts: true});
+  discBot.channels.cache.find(val => val.name === 'patalking').send(member.user.username+' ha entrado al servidor', {tts: true});
 });
 
 
 
-discBot.on("message", (message) => {
+discBot.on("message", async (message) => {
 	if(berenjena == true){
 		message.react('🍆').catch(console.error);
 	}
@@ -50,26 +51,32 @@ discBot.on("messageUpdate", (oldMessage, newMessage) => {
 });
 
 
-discBot.on("voiceStateUpdate", (olduser,newuser) => { //Indica que alguien se ha conectado al canal de voz principal	
-	if(newuser.voiceChannel == null && (olduser.voiceChannel.name == 'Mercado de la Sal' || olduser.voiceChannel.name == 'Callejon de los negros' || olduser.voiceChannel.name == 'Las puertas')){
-		discBot.channels.find(val => val.name === 'patalking').send(olduser.user.username+' Se ha desconectado', {tts: true});
-		discBot.channels.find(val => val.name === 'patalking').bulkDelete(1);		
-		lastUserD = olduser.id;
-	}
-	if(newuser.voiceChannel != null){
-		if((newuser.voiceChannel.name == 'Mercado de la Sal' || newuser.voiceChannel.name == 'Callejon de los negros' || olduser.voiceChannel.name == 'Las puertas') && olduser.voiceChannel == null){
-			if(newuser.user.username == 'Iceword01'){
-				discBot.channels.find(val => val.name === 'patalking').send('Javo se ha conectado', {tts: true});
-			} else{
-				discBot.channels.find(val => val.name === 'patalking').send(newuser.user.username+' Se ha conectado', {tts: true});
+discBot.on("voiceStateUpdate", (olduser,newuser) => { //Indica que alguien se ha conectado al canal de voz principal
+	// console.log(olduser)
+	// console.log(olduser.channel)	
+	try{
+		if(newuser.channel == null && (olduser.channel.id == '294922283942674444' || olduser.channel.name == 'Callejon de los negros' || olduser.channel.name == 'Las puertas')){
+			discBot.channels.fetch('294922283942674443').then(channel => channel.send(olduser.member.user.username+' Se ha desconectado', {tts: true}).then(message => message.delete()));
+			lastUserD = olduser.id;
+		}
+		if(newuser.channel != null){
+			if((newuser.channel.id == '294922283942674444' || newuser.channel.name == 'Callejon de los negros' || olduser.channel.name == 'Las puertas') && olduser.channel == null){
+				if(newuser.member.user.username == 'Iceword01'){
+					discBot.channels.fetch('294922283942674443').then(channel => channel.send('Javo se ha conectado', {tts: true}).then(message => message.delete()));
+				} else{
+					discBot.channels.fetch('294922283942674443').then(channel => channel.send(newuser.member.user.username+' Se ha conectado', {tts: true}).then(message => message.delete()));
+				}
+				lastUserC = newuser.id;
 			}
-			discBot.channels.find(val => val.name === 'patalking').bulkDelete(1);
-			lastUserC = newuser.id;
+			//SEERVIDOR DE PRUEBAS
+			// if(discBot.channels.cache.find(val => val.id == '294922283942674444').members.array().length == 1 && newuser.channel.name == 'Chorizo TV' && (olduser.voice.channel == null || olduser.voice.channel.name != 'Chorizo TV')){
+			// 	lastUserC = newuser.id;
+			// }
 		}
-		if(discBot.channels.find(val => val.name === 'Mercado de la Sal').members.array().length == 1 && newuser.voiceChannel.name == 'Chorizo TV' && (olduser.voiceChannel == null || olduser.voiceChannel.name != 'Chorizo TV')){
-			lastUserC = newuser.id;
-		}
+	} catch (err){
+		console.log(err)
 	}
+	
 });
 
 discBot.login(config.token);

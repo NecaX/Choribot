@@ -1,0 +1,65 @@
+
+> pocketsphinx@5.0.7 install /home/necax/Dockerfiles/Choribot/Source/node_modules/pocketsphinx
+> cmake-js compile
+
+[ '/usr/bin/node', '/usr/bin/cmake-js', 'compile' ]
+Not searching for unused variables given on the command line.
+-- The C compiler identification is GNU 7.5.0
+-- The CXX compiler identification is GNU 7.5.0
+-- Check for working C compiler: /usr/bin/cc
+-- Check for working C compiler: /usr/bin/cc -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Check for working CXX compiler: /usr/bin/c++
+-- Check for working CXX compiler: /usr/bin/c++ -- works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found PkgConfig: /usr/bin/pkg-config (found version "0.29.1") 
+-- Found SWIG: /usr/bin/swig3.0 (found suitable version "3.0.12", minimum required is "3.0.7") 
+-- Checking for module 'sphinxbase>=5prealpha'
+--   Found sphinxbase, version 5prealpha
+-- Checking for module 'pocketsphinx>=5prealpha'
+--   Found pocketsphinx, version 5prealpha
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/necax/Dockerfiles/Choribot/Source/node_modules/pocketsphinx/build
+[ 16%] Generating swig bindings
+Scanning dependencies of target SphinxBase
+[ 33%] Building CXX object sphinxbase/CMakeFiles/SphinxBase.dir/sb.cpp.o
+sphinxbase/CMakeFiles/SphinxBase.dir/build.make:66: recipe for target 'sphinxbase/CMakeFiles/SphinxBase.dir/sb.cpp.o' failed
+CMakeFiles/Makefile2:85: recipe for target 'sphinxbase/CMakeFiles/SphinxBase.dir/all' failed
+Makefile:83: recipe for target 'all' failed
+Not searching for unused variables given on the command line.
+-- The C compiler identification is GNU 7.5.0
+-- The CXX compiler identification is GNU 7.5.0
+-- Check for working C compiler: /usr/bin/cc
+-- Check for working C compiler: /usr/bin/cc -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Check for working CXX compiler: /usr/bin/c++
+-- Check for working CXX compiler: /usr/bin/c++ -- works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found PkgConfig: /usr/bin/pkg-config (found version "0.29.1") 
+-- Found SWIG: /usr/bin/swig3.0 (found suitable version "3.0.12", minimum required is "3.0.7") 
+-- Checking for module 'sphinxbase>=5prealpha'
+--   Found sphinxbase, version 5prealpha
+-- Checking for module 'pocketsphinx>=5prealpha'
+--   Found pocketsphinx, version 5prealpha
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/necax/Dockerfiles/Choribot/Source/node_modules/pocketsphinx/build
+[ 16%] Generating swig bindings
+Scanning dependencies of target SphinxBase
+[ 33%] Building CXX object sphinxbase/CMakeFiles/SphinxBase.dir/sb.cpp.o
+sphinxbase/CMakeFiles/SphinxBase.dir/build.make:66: recipe for target 'sphinxbase/CMakeFiles/SphinxBase.dir/sb.cpp.o' failed
+CMakeFiles/Makefile2:85: recipe for target 'sphinxbase/CMakeFiles/SphinxBase.dir/all' failed
+Makefile:83: recipe for target 'all' failed

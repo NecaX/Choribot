@@ -1,10 +1,10 @@
 exports.run = (client, message, args) => {
 	if (args[0] != null) {
 		var str = args[0].toLowerCase();
-		var patt = /^[1-9][0-9]{10}d[1-9][0-9]{10}$/ //Patron que comprueba que el dado introducido es correcto
+		var patt = /^[0-9]{1,3}d[0-9]{1,3}$/ //Patron que comprueba que el dado introducido es correcto
 		var mostrar = '';
 		if (!patt.test(str)) {
-			message.channel.send('Dado invalido, el comando es $dado (numero de dados)d(caras del dado)');
+			message.channel.send('Dado invalido, el comando es /dado (numero de dados)d(caras del dado)');
 		} else { //Si el dado es correcto
 			var num = str.slice(0,1); //Variable num, coge el primer numero del array pasado
 			str = str.slice(1); //Elimina del array el primer numero, que guardamos en la variable num. Al final esta varible tendra las veces que se tira el dado

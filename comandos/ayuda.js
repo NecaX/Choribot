@@ -3,7 +3,7 @@ exports.run = (client, message, args) => {
 		const Discord = require("discord.js");
 		console.log('Ayuda enviada a '+message.author);
 		message.channel.send('ayudita en camino, revisa tus MD :)').catch(console.error);
-		const embed = new Discord.RichEmbed() 
+		const embed = new Discord.MessageEmbed() 
 		.setTitle("Actualmente tengo los siguientes comandos:")
 		.setAuthor(message.author.username, message.author.avatarURL)
 		.setColor(0x00AE86)

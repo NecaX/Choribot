@@ -1,9 +1,10 @@
 exports.run = (client, message, args) => {
-	if(message.member.roles.some(r=>["Señor total del universo", "Alto rango del infierno", "Alta ranga dela infierna", "Usuarios"].includes(r.name)) ) {
-		if(message.member.voiceChannel){ //Se conecta al canal de voz del que lo llame
+	if(message.member.roles.cache.some(r=>["Señor total del universo", "Alto rango del infierno", "Alta ranga dela infierna", "Usuarios"].includes(r.name)) ) {
+		if(message.member.voice.channel){ //Se conecta al canal de voz del que lo llame
 			const Discord = require("discord.js");
 			const command = args[0];
 			const folder = './Otros/musica';
+			// const folder = '../Datos/musica';
 			const fs = require('fs');
 
 			const path = require("path");
@@ -19,14 +20,13 @@ exports.run = (client, message, args) => {
 					});
 					
 					var aleatorio = Math.floor((Math.random() * musica.length))
-					client.channels.find('id','373208912545185809').send('Se esta reproduciendo: '+musica[aleatorio]).catch(console.error);
-					client.channels.find('id','373208912545185809').setTopic('Se esta reproduciendo: '+musica[aleatorio]).catch(console.error);
-					message.member.voiceChannel.join().then(connection => {
-						//message.reply('Listo para la marcha')
-						dispatcher = connection.playFile('./Otros/musica/'+musica[aleatorio]);
-						
+					client.channels.fetch('373208912545185809').then(channel => channel.send('Se esta reproduciendo: '+musica[aleatorio]).catch(console.error));
+					client.channels.fetch('373208912545185809').then(channel => channel.setTopic('Se esta reproduciendo: '+musica[aleatorio]).catch(console.error));
+					message.member.voice.channel.join().then(connection => {
+						dispatcher = connection.play(folder+'/'+musica[aleatorio]);
+
+
 						dispatcher.on('end', () => {
-							//message.channel.send('Fin');
 							if(off == 0){
 								try {
 									let commandFile = require(`./musica.js`);
@@ -36,21 +36,40 @@ exports.run = (client, message, args) => {
 								}
 							}
 						});
-					}).catch(console.log);
+					});
+					
+					// dispatcher.on('end', () => {
+					// 	//message.channel.send('Fin');
+					// 	if(off == 0){
+					// 		try {
+					// 			let commandFile = require(`./musica.js`);
+					// 			commandFile.run(client, message, args);
+					// 		} catch (err) {
+					// 			console.error(err);
+					// 		}
+					// 	}
+					// });
+
+					// message.member.voice.channel.join().then(connection => {
+					// 	//message.reply('Listo para la marcha')
+					// 	dispatcher = connection.play('./Otros/musica/'+musica[aleatorio]);
+						
+					// 	
+					// }).catch(console.log);
 				break;
 				case 'off':
 						off = 1;
 						if (message.author.bot) return;
-							if (message.member.voiceChannel) {
-								message.member.voiceChannel.leave();
+							if (message.member.voice.channel) {
+								message.member.voice.channel.leave();
 							} else {
 								message.reply('Necesitas estar en un canal de voz primero');
 							}
 				break;
 				case 'cambia':
 					off = 1;
-					if (message.member.voiceChannel) {
-						message.member.voiceChannel.leave();
+					if (message.member.voice.channel) {
+						message.member.voice.channel.leave();
 					} else {
 						message.reply('Necesitas estar en un canal de voz primero');
 					}
@@ -81,15 +100,15 @@ exports.run = (client, message, args) => {
 					});
 										
 					if(cancion!=null){
-						if (message.member.voiceChannel) {
-							//message.member.voiceChannel.leave();
+						if (message.member.voice.channel) {
+							//message.member.voice.channel.leave();
 						} else {
 							message.reply('Necesitas estar en un canal de voz primero');
 						}
-						client.channels.find('id','373208912545185809').send('Se esta reproduciendo: '+cancion).catch(console.error);
-						client.channels.find('id','373208912545185809').setTopic('Se esta reproduciendo: '+cancion).catch(console.error);
-						message.member.voiceChannel.join().then(connection => {
-							dispatcher = connection.playFile('./Otros/musica'+cancion);	
+						client.channels.fetch('373208912545185809').then(channel => channel.send('Se esta reproduciendo: '+cancion).catch(console.error));
+						client.channels.fetch('373208912545185809').then(channel => channel.setTopic('Se esta reproduciendo: '+cancion).catch(console.error));
+						message.member.voice.channel.join().then(connection => {
+							dispatcher = connection.play(folder+'/'+cancion);	
 
 
 							dispatcher.on('end', () => {
@@ -112,7 +131,7 @@ exports.run = (client, message, args) => {
 					var canciones = '';
 					var tot = 0;
 					var i = 0;
-					const embed = new Discord.RichEmbed();
+					const embed = new Discord.MessageEmbed();
 					message.author.createDM().then((successMessage) => {
 						message.channel.send('Lista de canciones enviada por DM, disfruta el spam').catch(console.error);
 						fs.readdirSync(folder).forEach(file => {
@@ -156,7 +175,7 @@ exports.run = (client, message, args) => {
 						else {
 							var url = 'https://www.youtube.com/watch?v='+result.items[0].id.videoId;
 							const streamOptions = { seek: 0, volume: 1 };
-							message.member.voiceChannel.join().then(connection => {
+							message.member.voice.channel.join().then(connection => {
 								const stream = ytdl(url, { filter : 'audioonly' });
 								const dispatcher = connection.playStream(stream, streamOptions);
 								off=0;
