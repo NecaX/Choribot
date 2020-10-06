@@ -9,11 +9,11 @@ lanzar.vbs - Acceso directo.lnk
 data
 Comandos desactualizados
 conectados
-conectados
 data/discord_users.json
 data/latestDiscordMessageIds.json
 data/latestDiscordMessageIds.json
-conectados
 comandos/cerveza.js
-./user-audio
-./tail
+user-audio
+tail
+error
+.dockerignore
