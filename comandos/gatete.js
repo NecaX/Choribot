@@ -1,5 +1,4 @@
 const fetch = require("node-fetch");
-// TODO: UNTESTED
 exports.run = (client, message, args) => {
     fetch('https://api.thecatapi.com/v1/images/search', {
           method: 'GET',
