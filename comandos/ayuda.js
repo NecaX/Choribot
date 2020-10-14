@@ -23,6 +23,8 @@ exports.run = (client, message, args) => {
 				  "Ahora se utilizar el buscador de internet y te encuentro tus canciones favoritas")
 		.addField("/Dado [X]D[Y]",
 				  "Lanzo un dado de Y caras X veces.")
+		.addField("/gatete", 
+					"Envia una imagen de gatete aleatoria")
 		.addField("/Borrar cantidad [usuario]",
 				  "Para borrar una cantidad X de mensajes [De un usuario concreto].")
 		.addField("/Llamar [@usuario/parar]",
