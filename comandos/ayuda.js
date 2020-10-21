@@ -24,7 +24,13 @@ exports.run = (client, message, args) => {
 		.addField("/Dado [X]D[Y]",
 				  "Lanzo un dado de Y caras X veces.")
 		.addField("/gatete", 
-					"Envia una imagen de gatete aleatoria")
+					"Envia una imagen de un gatete aleatorio")
+		.addField("/perrete", 
+					"Envia una imagen de un perrete aleatorio")
+		.addField("/zorrito", 
+					"Envia una imagen de un zorrito aleatorio")
+		.addField("/animalico", 
+					"Envia una imagen de un animalico aleatorio")
 		.addField("/Borrar cantidad [usuario]",
 				  "Para borrar una cantidad X de mensajes [De un usuario concreto].")
 		.addField("/Llamar [@usuario/parar]",
