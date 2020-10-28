@@ -56,15 +56,15 @@ discBot.on("voiceStateUpdate", (olduser,newuser) => { //Indica que alguien se ha
 	// console.log(olduser.channel)	
 	try{
 		if(newuser.channel == null && (olduser.channel.id == '294922283942674444' || olduser.channel.name == 'Callejon de los negros' || olduser.channel.name == 'Las puertas')){
-			discBot.channels.fetch('294922283942674443').then(channel => channel.send(olduser.member.user.username+' Se ha desconectado', {tts: true}).then(message => message.delete()));
+			discBot.channels.fetch('294922283942674443').then(channel => channel.send(olduser.member.user.username+' Se ha desconectado', {tts: true}).then(message => message.delete({ timeout: 3000 })));
 			lastUserD = olduser.id;
 		}
 		if(newuser.channel != null){
 			if((newuser.channel.id == '294922283942674444' || newuser.channel.name == 'Callejon de los negros' || olduser.channel.name == 'Las puertas') && olduser.channel == null){
 				if(newuser.member.user.username == 'Iceword01'){
-					discBot.channels.fetch('294922283942674443').then(channel => channel.send('Javo se ha conectado', {tts: true}).then(message => message.delete()));
+					discBot.channels.fetch('294922283942674443').then(channel => channel.send('Javo se ha conectado', {tts: true}).then(message => message.delete({ timeout: 3000 })));
 				} else{
-					discBot.channels.fetch('294922283942674443').then(channel => channel.send(newuser.member.user.username+' Se ha conectado', {tts: true}).then(message => message.delete()));
+					discBot.channels.fetch('294922283942674443').then(channel => channel.send(newuser.member.user.username+' Se ha conectado', {tts: true}).then(message => message.delete({ timeout: 3000 })));
 				}
 				lastUserC = newuser.id;
 			}
