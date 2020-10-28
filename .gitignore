@@ -17,3 +17,4 @@ user-audio
 tail
 error
 .dockerignore
+.DS_STORE
