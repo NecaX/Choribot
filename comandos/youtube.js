@@ -1,37 +1,40 @@
+const ytdl = require('ytdl-core-discord');
+const config = require("../config.json");
+
+async function play(connection, url, voiceChannel) {
+	const dispatcher = connection.play(await ytdl(url), { type: 'opus' });
+	dispatcher.on('finish', () => {
+		voiceChannel.leave();
+	})
+}
+
 exports.run = (client, message, args) => {
 	if(message.member.roles.cache.some(r=>["Señor total del universo", "Alto rango del infierno", "Alta ranga dela infierna", "Usuarios"].includes(r.name)) ) {
-		if(message.member.voice.channel){ //Se conecta al canal de voz del que lo llame
-			const Discord = require("discord.js");
-			const command = args[0];
-			const fs = require('fs');
-			const ytdl = require('ytdl-core');
-
-			const path = require("path");
-			const config = require("../config.json");
+		var voiceChannel = message.member.voice.channel
+		if(voiceChannel){ //Se conecta al canal de voz del que lo llame
 
 			var YouTube = require('youtube-node');
 			var youTube = new YouTube();
-			var i=0;
-			var nombre='';
-			off = 0;
-		
 			youTube.setKey(config.youtoken);
-			
 
-			switch(args[0]){
+			switch(args[0]) {
 				case 'off':
-					off = 1;
 					if (message.author.bot) return;
-						if (message.member.voice.channel) {
-							message.member.voice.channel.leave();
-						} else {
-							message.reply('Necesitas estar en un canal de voz primero');
-						}
-				break;
+
+					if (voiceChannel) {
+						voiceChannel.leave();
+					} else {
+						message.reply('Necesitas estar en un canal de voz primero');
+					}
+					break;
+
 				case undefined:
 					message.reply('Indica un termino que buscar o pon la url de un video');
-				break;
+					break;
+
 				default:
+					var i=0;
+					var nombre='';
 					console.log(args[0])
 					while(args[i]!=null){
 						nombre=nombre.concat(args[i]+' ');
@@ -49,26 +52,12 @@ exports.run = (client, message, args) => {
 							}
 							
 							console.log(url);
-							const streamOptions = { seek: 0, volume: 1 };
-							message.member.voice.channel.join().then(connection => {
-								const stream = ytdl(url, { filter : 'audioonly' });
-								const dispatcher = connection.play(stream, streamOptions);
-								off=0;
-								dispatcher.on('end', () => {
-									if(off == 0){
-										try {
-											let commandFile = require(`./youtube.js`);
-											commandFile.run(client, message, args);
-										} catch (err) {
-											console.error(err);
-										}
-									}
-								});
-		
+							voiceChannel.join().then(connection => {
+								play(connection, url, voiceChannel)		
 							}).catch(console.error);
 						}
 					});
-				break;
+					break;
 			}
 		}else{
 			message.reply('Necesitas estar en un canal de voz primero');
