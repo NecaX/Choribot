@@ -98,7 +98,7 @@ function ejecutarcomandos(message){
 			let commandFile = require(`./comandos/${command}.js`);
 			commandFile.run(discBot, message, args);
 		} catch (err) {
-			console.error(err);
+			console.error("El comando %s no existe",command);
 		}
 	}
 
