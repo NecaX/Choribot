@@ -11,15 +11,15 @@
   "license": "ISC",
   "dependencies": {
     "discord.js": "^12.3.1",
-    "ffmpeg": "0.0.4",
     "ffmpeg-static": "^4.2.7",
+    "libsodium-wrappers": "^0.7.9",
+    "node-fetch": "^2.6.1",
     "mysql": "^2.18.1",
-    "opusscript": "0.0.7",
+    "nodegit": "^0.27.0",
+    "opusscript": "^0.0.7",
     "python-shell": "^2.0.2",
-    "sodium": "^3.0.2",
     "uWebSockets.js": "github:uNetworking/uWebSockets.js#v17.3.0",
     "youtube-node": "^1.3.3",
-    "ytdl": "^1.4.1",
     "ytdl-core": "^2.1.7",
     "ytdl-core-discord": "^1.3.0"
   }
