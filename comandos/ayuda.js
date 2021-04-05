@@ -17,8 +17,8 @@ exports.run = (client, message, args) => {
 				  "Frases a las que reacciono.")
 		.addField("/Decir",
 				  "Toma mi voz y hazla tuya.")
-		.addField("/Musica [on/off/cambia/buscar [...]/youtube [...]/lista]",
-				  "Para que podamos montar una fiesta (on -> canción aleatoria | off -> Apaga la música | cambia -> Cambia a canción aleatoria | buscar -> busca una canción | youtube -> busca una canción en youtube | lista -> Te manda la lista de canciones.")
+		.addField("/Musica [on/off/cambia/buscar [...]/lista]",
+				  "Para que podamos montar una fiesta (on -> canción aleatoria | off -> Apaga la música | cambia -> Cambia a canción aleatoria | buscar -> busca una canción | lista -> Te manda la lista de canciones.")
 		.addField("/Youtube [...]",
 				  "Ahora se utilizar el buscador de internet y te encuentro tus canciones favoritas")
 		.addField("/Dado [X]D[Y]",

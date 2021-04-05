@@ -33,8 +33,8 @@ exports.run = (client, message, args) => {
 		function msg(){
 			message.mentions.users.first().send({
 				files: [{
-					attachment: 'Otros/gansosenal.png',
-					name: 'gansosenal.png'
+					attachment: 'Otros/llamar.png',
+					name: 'llamar.png'
 				}]
 			  })
 				.catch(console.error);

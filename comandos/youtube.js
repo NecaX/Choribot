@@ -1,10 +1,21 @@
 const ytdl = require('ytdl-core-discord');
 const config = require("../config.json");
+var bucle
 
-async function play(connection, url, voiceChannel) {
+async function play(connection, url, voiceChannel, client, message, args) {
 	const dispatcher = connection.play(await ytdl(url), { type: 'opus' });
 	dispatcher.on('finish', () => {
-		voiceChannel.leave();
+		if(bucle == false){
+			voiceChannel.leave();
+		} else {
+			try {
+				let commandFile = require(`./youtube.js`);
+				commandFile.run(client, message, args);
+			} catch (err) {
+				console.error(err);
+			}
+		}
+			
 	})
 }
 
@@ -16,6 +27,12 @@ exports.run = (client, message, args) => {
 			var YouTube = require('youtube-node');
 			var youTube = new YouTube();
 			youTube.setKey(config.youtoken);
+
+			if(args[args.length-1] == "bucle"){
+				bucle = true
+			} else {
+				bucle = false
+			}
 
 			switch(args[0]) {
 				case 'off':
@@ -35,10 +52,18 @@ exports.run = (client, message, args) => {
 				default:
 					var i=0;
 					var nombre='';
-					console.log(args[0])
-					while(args[i]!=null){
-						nombre=nombre.concat(args[i]+' ');
-						i++;
+					if(bucle == true){
+						while(args[i]!=null){
+							if(args[i] != "bucle"){
+								nombre=nombre.concat(args[i]+' ');								
+							}
+							i++;
+						}
+					}else{
+						while(args[i]!=null){
+							nombre=nombre.concat(args[i]+' ');
+							i++;
+						}
 					}
 					youTube.search(nombre, 2, function(error, result) {
 						if (error) {
@@ -53,7 +78,7 @@ exports.run = (client, message, args) => {
 							
 							console.log(url);
 							voiceChannel.join().then(connection => {
-								play(connection, url, voiceChannel)		
+								play(connection, url, voiceChannel, client, message, args)		
 							}).catch(console.error);
 						}
 					});

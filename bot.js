@@ -99,6 +99,7 @@ function ejecutarcomandos(message){
 			commandFile.run(discBot, message, args);
 		} catch (err) {
 			console.error("El comando %s no existe",command);
+			console.error(err);
 		}
 	}
 

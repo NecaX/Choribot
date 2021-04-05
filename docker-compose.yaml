@@ -7,6 +7,7 @@ services:
 
         volumes:
             - "/home/necax/Dockerfiles/Choribot/Datos/:/usr/src/app/Otros/"
+            - "./comandos:/usr/src/app/comandos"
         restart: "on-failure"
         container_name: choribot
         build:

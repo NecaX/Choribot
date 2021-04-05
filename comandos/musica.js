@@ -10,6 +10,15 @@ exports.run = (client, message, args) => {
 			const path = require("path");
 			const config = require("../config.json");
 
+			var bucle
+
+			if(args[args.length-1] == "bucle"){
+				bucle = true
+			} else {
+				bucle = false
+			}
+			console.log(args[args.length-1] + "-" + bucle)
+
 			switch (command) {
 				case 'on':
 					
@@ -26,36 +35,22 @@ exports.run = (client, message, args) => {
 						dispatcher = connection.play(folder+'/'+musica[aleatorio]);
 
 
-						dispatcher.on('end', () => {
+						dispatcher.on('finish', () => {
 							if(off == 0){
-								try {
-									let commandFile = require(`./musica.js`);
-									commandFile.run(client, message, args);
-								} catch (err) {
-									console.error(err);
+								if(bucle == true){
+									try {
+										let commandFile = require(`./musica.js`);
+										commandFile.run(client, message, args);
+									} catch (err) {
+										console.error(err);
+									}
+								} else {
+									voiceChannel.leave();
 								}
+								
 							}
 						});
-					});
-					
-					// dispatcher.on('end', () => {
-					// 	//message.channel.send('Fin');
-					// 	if(off == 0){
-					// 		try {
-					// 			let commandFile = require(`./musica.js`);
-					// 			commandFile.run(client, message, args);
-					// 		} catch (err) {
-					// 			console.error(err);
-					// 		}
-					// 	}
-					// });
-
-					// message.member.voice.channel.join().then(connection => {
-					// 	//message.reply('Listo para la marcha')
-					// 	dispatcher = connection.play('./Otros/musica/'+musica[aleatorio]);
-						
-					// 	
-					// }).catch(console.log);
+					});					
 				break;
 				case 'off':
 						off = 1;
@@ -87,10 +82,20 @@ exports.run = (client, message, args) => {
 					var i=1;
 					var nombre="";
 					var cancion;
-					while(args[i]!=null){
-						nombre=nombre.concat(" "+args[i]);
-						i++;
+					if(bucle == true){
+						while(args[i]!=null){
+							if(args[i] != "bucle"){
+								nombre=nombre.concat(" "+args[i]);								
+							}
+							i++;
+						}
+					}else{
+						while(args[i]!=null){
+							nombre=nombre.concat(" "+args[i]);
+							i++;
+						}
 					}
+					console.log(nombre)
 					nombre=nombre.slice(1, nombre.length)
 					var lista;					
 					fs.readdirSync(folder).forEach(file => {
@@ -108,17 +113,21 @@ exports.run = (client, message, args) => {
 						client.channels.fetch('373208912545185809').then(channel => channel.send('Se esta reproduciendo: '+cancion).catch(console.error));
 						client.channels.fetch('373208912545185809').then(channel => channel.setTopic('Se esta reproduciendo: '+cancion).catch(console.error));
 						message.member.voice.channel.join().then(connection => {
-							dispatcher = connection.play(folder+'/'+cancion);	
+							const dispatcher = connection.play(folder+'/'+cancion);	
 
 
-							dispatcher.on('end', () => {
+							dispatcher.on('finish', () => {
 								if(off == 0){
-									try {
-										let commandFile = require(`./musica.js`);
-										commandFile.run(client, message, args);
-									} catch (err) {
-										console.error(err);
-									}
+									if(bucle == true){
+										try {
+											let commandFile = require(`./musica.js`);
+											commandFile.run(client, message, args);
+										} catch (err) {
+											console.error(err);
+										}
+									} else {
+										message.member.voice.channel.leave();
+									}		
 								}
 							});
 						});
@@ -154,46 +163,6 @@ exports.run = (client, message, args) => {
 						}});
 						
 					});	
-				break;
-				case 'youtube':
-					const ytdl = require('ytdl-core');
-					var YouTube = require('youtube-node');
-					var youTube = new YouTube();
-					var i=1;
-					var nombre='';
-					off = 1;
-					youTube.setKey(config.youToken);
-
-					while(args[i]!=null){
-						nombre=nombre.concat(args[i]+' ');
-						i++;
-					}
-					youTube.search(nombre, 2, function(error, result) {
-						if (error) {
-							console.log(error);
-						}
-						else {
-							var url = 'https://www.youtube.com/watch?v='+result.items[0].id.videoId;
-							const streamOptions = { seek: 0, volume: 1 };
-							message.member.voice.channel.join().then(connection => {
-								const stream = ytdl(url, { filter : 'audioonly' });
-								const dispatcher = connection.playStream(stream, streamOptions);
-								off=0;
-								dispatcher.on('end', () => {
-									if(off == 0){
-										try {
-											let commandFile = require(`./musica.js`);
-											commandFile.run(client, message, args);
-										} catch (err) {
-											console.error(err);
-										}
-									}
-								});
-
-							}).catch(console.error);
-						}
-					  });
-					
 				break;
 				default:
 					message.channel.send('no se han reconocido los parametros');
