@@ -45,7 +45,7 @@ exports.run = (client, message, args) => {
 										console.error(err);
 									}
 								} else {
-									voiceChannel.leave();
+									message.member.voice.channel.leave();
 								}
 								
 							}

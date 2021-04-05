@@ -9,6 +9,14 @@ exports.run = (client, message, args) => {
 
 			const path = require("path");
 			const config = require("../config.json");
+
+			var bucle
+
+			if(args[args.length-1] == "bucle"){
+				bucle = true
+			} else {
+				bucle = false
+			}
 			
 				var musica = [];
 				off = 0;
@@ -26,11 +34,15 @@ exports.run = (client, message, args) => {
 					dispatcher.on('end', () => {
 						//message.channel.send('Fin');
 						if(off == 0){
-							try {
-								let commandFile = require(`./mojinos.js`);
-								commandFile.run(client, message, args);
-							} catch (err) {
-								console.error(err);
+							if(bucle == true){
+								try {
+									let commandFile = require(`./mojinos.js`);
+									commandFile.run(client, message, args);
+								} catch (err) {
+									console.error(err);
+								}
+							} else {
+								message.member.voice.channel.leave();
 							}
 						}
 					});
