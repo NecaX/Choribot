@@ -20,7 +20,7 @@
     "moment": "^2.29.1",
     "momment": "^0.0.1",
     "mysql": "^2.18.1",
-    "node-fetch": "^3.1.0",
+    "node-fetch": "^3.1.1",
     "node-reminders": "^1.0.0",
     "node-schedule": "^2.0.0",
     "nodegit": "^0.27.0",
