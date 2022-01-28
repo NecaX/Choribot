@@ -2,32 +2,44 @@
 
 //General
 const path = require("path");
+var childProcess = require('child_process');
+const util = require('util')
 
 
 
-alrm = setInterval(function(){resetCon()},15000); //Resetear conexiones
+
+//alrm = setInterval(function(){resetCon()},15000); //Resetear conexiones
 var lastUserC = 0 // Ultimo usuario en conectarse
 var lastUserD = 0 // Ultimo usuuario en desconectarse
 var off = 0; //musica
 var llamarp = 0; //llamar
-var alrm = null;
+global.alarmas
 const fs = require('fs');
 var http = require('http');
 var berenjena = false;
-
-const Discord = require("discord.js");
-const discBot = new Discord.Client();
+const { Client, Collection, Intents, Activity } = require('discord.js');
+const { token } = require('./config.json');
 const config = require("./config.json");
+const discBot = new Client({ 
+	intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_VOICE_STATES],
+});
 
-discBot.on("ready", () => {
+discBot.commands = new Collection();
+const commandFiles = fs.readdirSync('./comandos').filter(file => file.endsWith('.js'));
+
+
+for (const file of commandFiles) {
+	const command = require(`./comandos/${file}`);
+	discBot.commands.set(command.data.name, command);
+	console.log(`Comando ${command.data.name} cargado`);
+}
+
+
+discBot.once('ready', () => {
 	console.log("En marcha!");
-	//Inicio
-	try {
-		let commandFile = require(`./inicio.js`);
-		commandFile.run(discBot);
-	} catch (err) {
-		console.error(err);
-	}
+	discBot.user.setActivity('tocar los cojones', { type: 'PLAYING' })
+	require('child_process').fork('register.js')
+	
 });
 
 
@@ -39,34 +51,38 @@ discBot.on("guildMemberAdd", (member) => {
 
 
 
-discBot.on("message", async (message) => {
-	if(berenjena == true){
-		message.react('🍆').catch(console.error);
-	}
-	ejecutarcomandos(message);	
-});
+// discBot.on("message", async (message) => {
+// 	if(berenjena == true){
+// 		message.react('🍆').catch(console.error);
+// 	}node b
+// 	//ejecutarcomandos(message);	
+// });
 
-discBot.on("messageUpdate", (oldMessage, newMessage) => {
-	ejecutarcomandos(newMessage);
-});
+// discBot.on("messageUpdate", (oldMessage, newMessage) => {
+// 	//ejecutarcomandos(newMessage);
+// });
 
-
-discBot.on("voiceStateUpdate", (olduser,newuser) => { //Indica que alguien se ha conectado al canal de voz principal
-	// console.log(olduser)
-	// console.log(olduser.channel)	
+discBot.on('voiceStateUpdate', async (olduser, newuser) => { //Indica que alguien se ha conectado al canal de voz principal
 	try{
-		if(newuser.channel == null && (olduser.channel.id == '294922283942674444' || olduser.channel.name == 'Callejon de los negros' || olduser.channel.name == 'Las puertas')){
-			discBot.channels.fetch('294922283942674443').then(channel => channel.send(olduser.member.user.username+' Se ha desconectado', {tts: true}).then(message => message.delete({ timeout: 3000 })));
+		// console.log("Old:\n")
+		// console.log(olduser.channel)
+		// console.log("\n----------------------------------------------\n")
+		// console.log("new:\n")
+		// console.log(newuser.channel)
+		if(newuser.channel == null && (olduser.channel.id == '294922283942674444' || olduser.channel.id == '294928756722630656' || olduser.channel.id == '294943063145578506')){
+			discBot.channels.fetch('294922283942674443').then(channel => channel.send({content: olduser.member.user.username+' Se ha desconectado', tts: true}).then(message => setTimeout(() => message.delete(), 5000)));
 			lastUserD = olduser.id;
+			console.log("disc")
 		}
 		if(newuser.channel != null){
-			if((newuser.channel.id == '294922283942674444' || newuser.channel.name == 'Callejon de los negros' || olduser.channel.name == 'Las puertas') && olduser.channel == null){
+			if((newuser.channel.id == '294922283942674444' || newuser.channel.id == '294928756722630656' || newuser.channel.id == '294943063145578506') && olduser.channel == null){
 				if(newuser.member.user.username == 'Iceword01'){
-					discBot.channels.fetch('294922283942674443').then(channel => channel.send('Javo se ha conectado', {tts: true}).then(message => message.delete({ timeout: 3000 })));
+					discBot.channels.fetch('294922283942674443').then(channel => channel.send({content: 'Javo se ha conectado', tts: true}).then(message => setTimeout(() => message.delete(), 5000)));
 				} else{
-					discBot.channels.fetch('294922283942674443').then(channel => channel.send(newuser.member.user.username+' Se ha conectado', {tts: true}).then(message => message.delete({ timeout: 3000 })));
+					discBot.channels.fetch('294922283942674443').then(channel => channel.send({content: newuser.member.user.username+' Se ha conectado', tts: true}).then(message => setTimeout(() => message.delete(), 5000)));
 				}
 				lastUserC = newuser.id;
+				console.log("conn")
 			}
 			//SEERVIDOR DE PRUEBAS
 			// if(discBot.channels.cache.find(val => val.id == '294922283942674444').members.array().length == 1 && newuser.channel.name == 'Chorizo TV' && (olduser.voice.channel == null || olduser.voice.channel.name != 'Chorizo TV')){
@@ -79,47 +95,43 @@ discBot.on("voiceStateUpdate", (olduser,newuser) => { //Indica que alguien se ha
 	
 });
 
-discBot.login(config.token);
-
-//funciones
-
-function ejecutarcomandos(message){
-	if (message.content.startsWith(config.prefix)) { //Comandos que empiezan por el prefijo
-		const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
-		const command = args.shift().toLowerCase();
-		if (command == 'berenjena' && args == 'on'){
-			berenjena = true;
+discBot.on('interactionCreate', async interaction => {
+	console.log(`${interaction.user.tag} en #${interaction.channel.name} ha comenzado la interacción /${interaction.command}`);
+	try{
+		if(interaction.isButton()){
+			const filter = i => i.customId === `Alarma`;
+			const collector = await interaction.channel.createMessageComponentCollector({ filter, time: 150000 });
+			collector.on('collect', m => {
+				clearInterval(alarmas);
+				return m.update({ content: `Se ha parado de llamar al usuario`, components: [] });
+			});
+			collector.on('end', collected => console.log(`Collected ${collected.size} items`));
+		}else if(interaction.isCommand()){
+			const command = discBot.commands.get(interaction.commandName);
+			if (!command) return;
+	
+			try {
+				await command.execute(interaction);
+			} catch (error) {
+				console.error(error);
+				await interaction.reply({ content: 'Ha habido un error ejecutando este comando.', ephemeral: true });
+			}
+		}else if(interaction.isContextMenu()){
+			console.log("La interacción es un Context Menu")
+		}else if(interaction.isMessageComponent()){
+			console.log("La interacción es un Message Component")
+		}else{
+			console.log(interaction)
+			return
 		}
-		if (command == 'berenjena' && args == 'off'){
-			berenjena = false;
-		}
-		console.log(command);
-		try {
-			let commandFile = require(`./comandos/${command}.js`);
-			commandFile.run(discBot, message, args);
-		} catch (err) {
-			console.error("El comando %s no existe",command);
-			console.error(err);
-		}
+	}catch(e){
+		console.log(e)
 	}
+	
+});
 
-	if (message.content.toLowerCase().startsWith('choribot')) { //Comandos conversacionales
-		
-		const command = message.content.toLowerCase();
-		
-		switch (command) {
-			case 'choribot, estas ahi?':
-				message.channel.send('Si señor '+message.author+' , me encuentro en tu mismo plano', {tts: true});
-			break;
-			
-			
-			case 'choribot prueba':
-				message.channel.send(message.channel.id);
-			break;
-			// Mas conversaciones
-		}
-	}
-}
+
+discBot.login(token);
 
 function resetCon(){
 	lastUserC=0;

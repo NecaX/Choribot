@@ -1,14 +1,20 @@
-const fetch = require("node-fetch");
-exports.run = (client, message, args) => {
-  try {
-    let animalicoFunctions = [
-      require(`./perrete.js`),
-      require(`./gatete.js`),
-      require(`./zorrito.js`),
-    ]
-    let randomAnimalicoFunction = animalicoFunctions[Math.floor(Math.random() * animalicoFunctions.length)]
-    randomAnimalicoFunction.run(client, message, args);
-  } catch (err) {
-    console.error(err);
-  }
-}
+const { SlashCommandBuilder } = require('@discordjs/builders');
+
+module.exports = {
+	data: new SlashCommandBuilder()
+		.setName('animalico')
+		.setDescription('Envia una imagen de un animalico aleatorio.'),
+	async execute(interaction) {
+    try {
+      let animalicoFunctions = [
+        require(`./perrete.js`),
+        require(`./gatete.js`),
+        require(`./zorrito.js`),
+      ]
+      let randomAnimalicoFunction = animalicoFunctions[Math.floor(Math.random() * animalicoFunctions.length)]
+      await randomAnimalicoFunction.execute(interaction);
+    } catch (err) {
+      console.error(err);
+    }
+	},
+};

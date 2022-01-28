@@ -1,13 +1,17 @@
-exports.run = (client, message, args) => {
-	message.author.createDM().then((successMessage) => {
-		const Discord = require("discord.js");
-		console.log('Ayuda enviada a '+message.author);
-		message.channel.send('ayudita en camino, revisa tus MD :)').catch(console.error);
-		const embed = new Discord.MessageEmbed() 
+const { SlashCommandBuilder } = require('@discordjs/builders');
+const { MessageEmbed } = require('discord.js');
+
+module.exports = {
+	data: new SlashCommandBuilder()
+		.setName('ayuda')
+		.setDescription('Te envío una ayudita :)'),
+	async execute(interaction) {
+
+		const embed = new MessageEmbed() 
 		.setTitle("Actualmente tengo los siguientes comandos:")
-		.setAuthor(message.author.username, message.author.avatarURL)
+		.setAuthor(interaction.user.username, interaction.user.avatarURL())
 		.setColor(0x00AE86)
-		.setFooter("Creado por NecaX", client.user.avatarURL)
+		.setFooter("Creado por NecaX", interaction.client.user.defaultAvatarURL)
 		.setTimestamp()
 		.addField("/Ping",
 				  "Para comprobar que sigo en el mismo plano que tú.")
@@ -39,9 +43,10 @@ exports.run = (client, message, args) => {
 				  "Te digo quien esta conectado en el Mercado de la Sal.")		  
 		.addField("/Sugerencia",
 				  "Para enviar cualquier sugerencia para mi desarrollo.")
+		.addField("/Ajam",
+				  "Pues eso.")
 		.addField("/About",
 				  "Para saber cosas sobre mi creador y mi desarrollo.");
-		
-		message.author.send({embed}).catch(console.error);
-	});
-}
+		return interaction.reply({ embeds: [embed], ephemeral: true });
+	},
+};
