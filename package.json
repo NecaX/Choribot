@@ -17,7 +17,7 @@
     "discord.js": "^13.6.0",
     "ffmpeg-static": "^4.4.1",
     "libsodium-wrappers": "^0.7.9",
-    "moment": "^2.29.1",
+    "moment": "^2.29.4",
     "momment": "^0.0.1",
     "mysql": "^2.18.1",
     "node-fetch": "^3.2.0",
