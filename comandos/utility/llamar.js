@@ -1,53 +1,5 @@
-// exports.run = (client, message, args) => {
-// 	if(message.member.roles.cache.some(r=>["Señor total del universo", "Alto rango del infierno", "Alta ranga dela infierna"].includes(r.name)) ) {
-// 		var destino = args[0];
-
-// 		if(destino == 'parar'){
-// 			llamarp=0;
-// 			message.channel.send('Se ha dejado de llamar');
-// 		}else{
-// 			message.channel.send('Se va a llamar a '+destino);
-// 			if((client.users.cache.find(user => user.username === destino)==null) && (client.users.cache.find(user => user.username === message.mentions.users.first().username)==null)){
-// 				message.channel.send('El nombre de usuario no existe').catch(console.error);
-// 				return;
-// 			}
-// 			if(typeof alrm != 'undefined'){
-// 				console.log(alrm._idleTimeout);
-// 				if(alrm._idleTimeout > 0){
-// 					message.channel.send('Ya se esta llamando a otro usuario').catch(console.error);
-// 					return;
-// 				}
-// 			}
-// 			llamarp=1;
-// 		}
-
-// 		if(llamarp==1){
-// 			alrm = setInterval(function(){msg()},3000);
-// 			console.log('Creada alarma '+alrm);
-// 		} else {
-// 			console.log('Parada alarma '+alrm);
-// 			clearInterval(alrm);
-// 			console.log('Se ha terminado de mandar mensajes');
-// 		}
-
-// 		function msg(){
-// 			message.mentions.users.first().send({
-// 				files: [{
-// 					attachment: 'Otros/llamar.png',
-// 					name: 'llamar.png'
-// 				}]
-// 			  })
-// 				.catch(console.error);
-// 			console.log('Msg enviado');
-// 			return;
-// 		}
-// 	} else {
-// 		message.channel.send('No tienes privilegios suficientes').catch(console.error);
-// 	}
-// }
-
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageActionRow, MessageButton } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const wait = require('util').promisify(setTimeout);
 
 module.exports = {
@@ -66,29 +18,46 @@ module.exports = {
 		console.log(interaction.user.username)	
 		alarmas = setInterval(function(){msg()},3000);
 		console.log('Creada alarma '+alarmas);
-		const row = new MessageActionRow()
+		const row = new ActionRowBuilder()
 			.addComponents(
-				new MessageButton()
+				new ButtonBuilder()
 					.setCustomId(`Alarma`)
 					.setLabel(`Parar de llamar a ${destino.username}`)
-					.setStyle('PRIMARY'),
+					.setStyle(ButtonStyle.Primary),
 			);
-		console.log(row)
 
-		return interaction.reply({ content: 'Se va a llamar a '+destino.username, components: [row] });
+
+		const response = await interaction.reply({ 
+			content: 'Se va a llamar a '+destino.username, 
+			components: [row] 
+		});
+
+		const collectorFilter = i => i.customId === `Alarma`;
+
+		console.log("collectorFilter")
+		try {
+			const confirmation = await response.awaitMessageComponent({ filter: collectorFilter, time: 3_600_000 });
+			clearInterval(alarmas);
+			return interaction.editReply({ content: `Se ha parado de llamar al usuario`, components: [] });
+		} catch (e) {
+			clearInterval(alarmas);
+			await interaction.editReply({ content: `Llevo demasiado tiempo....... Vamos a parar anda.`, components: [] });
+		}
+
+		
 		
 		
 
 		function msg(){
 			destino.send({
 				files: [{
-					//attachment: '../Datos/llamar.png',
-					attachment: 'Otros/llamar.png',
+					attachment: './Datos/llamar.png',
+					// attachment: 'Otros/llamar.png',
 					name: 'llamar.png'
 				}]
 			  })
 				.catch(console.error);
-			console.log('Msg enviado');
+			// console.log('Msg enviado');
 			return;
 		}
 

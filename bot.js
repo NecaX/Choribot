@@ -17,7 +17,7 @@ global.alarmas
 const fs = require('fs');
 var http = require('http');
 var berenjena = false;
-const { Client, Events, Collection, GatewayIntentBits } = require('discord.js');
+const { Client, Events, Collection, GatewayIntentBits, ComponentType } = require('discord.js');
 const { token } = require('./config.json');
 const config = require("./config.json");
 const discBot = new Client({ 
@@ -53,30 +53,30 @@ discBot.once(Events.ClientReady, c => {
 	require('child_process').fork('register.js')
 });
 
-discBot.on(Events.UserUpdate, c => {
-	console.log("aaaaaaaa")
-})
 
 discBot.on(Events.InteractionCreate, async interaction => {
-	if (!interaction.isChatInputCommand()) return;
 	console.log(`${interaction.user.tag} en #${interaction.channel.name} ha comenzado la interacción /${interaction}`);	
 	
 	const command = interaction.client.commands.get(interaction.commandName);
 
-	if (!command) {
-		console.error(`No command matching ${interaction.commandName} was found.`);
-		return;
-	}
-
 	try{
-		if(interaction.isButton()){
-			const filter = i => i.customId === `Alarma`;
-			const collector = await interaction.channel.createMessageComponentCollector({ filter, time: 150000 });
-			collector.on('collect', m => {
-				clearInterval(alarmas);
-				return m.update({ content: `Se ha parado de llamar al usuario`, components: [] });
-			});
-			collector.on('end', collected => console.log(`Collected ${collected.size} items`));
+		if(interaction.isButton()){			
+			// const filter = i => {
+			// 	i.deferUpdate();
+			// 	return i.customId === `Alarma`;
+			// }
+			// console.log(interaction)
+			// const collector = interaction.channel.createMessageComponentCollector({ componentType: ComponentType.Button, time: 15000 });
+
+			// collector.on('collect', m => {
+			// 	if(m.customId === `Alarma`){
+			// 		clearInterval(alarmas);
+			// 		return m.update({ content: `Se ha parado de llamar al usuario`, components: [] });
+			// 	}
+			// });
+
+			// collector.on('end', collected => console.log(`Collected ${collected.size} items`));
+
 		}else if(interaction.isCommand()){
 			const command = discBot.commands.get(interaction.commandName);
 			if (!command) return;
@@ -85,6 +85,7 @@ discBot.on(Events.InteractionCreate, async interaction => {
 				await command.execute(interaction);
 			} catch (error) {
 				console.error(error);
+				clearInterval(alarmas);
 				await interaction.reply({ content: 'Ha habido un error ejecutando este comando.', ephemeral: true });
 			}
 		}else if(interaction.isContextMenu()){
