@@ -5,6 +5,6 @@ module.exports = {
 		.setName('ping')
 		.setDescription('Para comprobar que sigo en el mismo plano que tu.'),
 	async execute(interaction) {
-		return interaction.reply({ content: 'Pong!', ephemeral: true });
+		await interaction.reply({ content: 'Pong!', ephemeral: true });
 	},
 };

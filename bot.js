@@ -17,86 +17,57 @@ global.alarmas
 const fs = require('fs');
 var http = require('http');
 var berenjena = false;
-const { Client, Collection, Intents, Activity } = require('discord.js');
+const { Client, Events, Collection, GatewayIntentBits } = require('discord.js');
 const { token } = require('./config.json');
 const config = require("./config.json");
 const discBot = new Client({ 
-	intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_VOICE_STATES],
+	// intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_VOICE_STATES],
+	intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildVoiceStates]
 });
 
+
 discBot.commands = new Collection();
-const commandFiles = fs.readdirSync('./comandos').filter(file => file.endsWith('.js'));
 
+const foldersPath = path.join(__dirname, 'comandos');
+const commandFolders = fs.readdirSync(foldersPath);
 
-for (const file of commandFiles) {
-	const command = require(`./comandos/${file}`);
-	discBot.commands.set(command.data.name, command);
-	console.log(`Comando ${command.data.name} cargado`);
+for (const folder of commandFolders) {
+	const commandsPath = path.join(foldersPath, folder);
+	const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+	for (const file of commandFiles) {
+		const filePath = path.join(commandsPath, file);
+		const command = require(filePath);
+		// Set a new item in the Collection with the key as the command name and the value as the exported module
+		if ('data' in command && 'execute' in command) {
+			discBot.commands.set(command.data.name, command);
+		} else {
+			console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
+		}
+	}
 }
 
 
-discBot.once('ready', () => {
-	console.log("En marcha!");
+discBot.once(Events.ClientReady, c => {
+	console.log(`En marcha! Logado como ${c.user.tag}`);
 	discBot.user.setActivity('tocar los cojones', { type: 'PLAYING' })
 	require('child_process').fork('register.js')
+});
+
+discBot.on(Events.UserUpdate, c => {
+	console.log("aaaaaaaa")
+})
+
+discBot.on(Events.InteractionCreate, async interaction => {
+	if (!interaction.isChatInputCommand()) return;
+	console.log(`${interaction.user.tag} en #${interaction.channel.name} ha comenzado la interacción /${interaction}`);	
 	
-});
+	const command = interaction.client.commands.get(interaction.commandName);
 
-
-discBot.on("guildMemberAdd", (member) => {
-  console.log(`Nuevo Usuario "${member.user.username}" Ha entrado a "${member.guild.name}"` );
-  
-  discBot.channels.cache.find(val => val.name === 'patalking').send(member.user.username+' ha entrado al servidor', {tts: true});
-});
-
-
-
-// discBot.on("message", async (message) => {
-// 	if(berenjena == true){
-// 		message.react('🍆').catch(console.error);
-// 	}node b
-// 	//ejecutarcomandos(message);	
-// });
-
-// discBot.on("messageUpdate", (oldMessage, newMessage) => {
-// 	//ejecutarcomandos(newMessage);
-// });
-
-discBot.on('voiceStateUpdate', async (olduser, newuser) => { //Indica que alguien se ha conectado al canal de voz principal
-	try{
-		// console.log("Old:\n")
-		// console.log(olduser.channel)
-		// console.log("\n----------------------------------------------\n")
-		// console.log("new:\n")
-		// console.log(newuser.channel)
-		if(newuser.channel == null && (olduser.channel.id == '294922283942674444' || olduser.channel.id == '294928756722630656' || olduser.channel.id == '294943063145578506')){
-			discBot.channels.fetch('294922283942674443').then(channel => channel.send({content: olduser.member.user.username+' Se ha desconectado', tts: true}).then(message => setTimeout(() => message.delete(), 5000)));
-			lastUserD = olduser.id;
-			console.log("disc")
-		}
-		if(newuser.channel != null){
-			if((newuser.channel.id == '294922283942674444' || newuser.channel.id == '294928756722630656' || newuser.channel.id == '294943063145578506') && olduser.channel == null){
-				if(newuser.member.user.username == 'Iceword01'){
-					discBot.channels.fetch('294922283942674443').then(channel => channel.send({content: 'Javo se ha conectado', tts: true}).then(message => setTimeout(() => message.delete(), 5000)));
-				} else{
-					discBot.channels.fetch('294922283942674443').then(channel => channel.send({content: newuser.member.user.username+' Se ha conectado', tts: true}).then(message => setTimeout(() => message.delete(), 5000)));
-				}
-				lastUserC = newuser.id;
-				console.log("conn")
-			}
-			//SEERVIDOR DE PRUEBAS
-			// if(discBot.channels.cache.find(val => val.id == '294922283942674444').members.array().length == 1 && newuser.channel.name == 'Chorizo TV' && (olduser.voice.channel == null || olduser.voice.channel.name != 'Chorizo TV')){
-			// 	lastUserC = newuser.id;
-			// }
-		}
-	} catch (err){
-		console.log(err)
+	if (!command) {
+		console.error(`No command matching ${interaction.commandName} was found.`);
+		return;
 	}
-	
-});
 
-discBot.on('interactionCreate', async interaction => {
-	console.log(`${interaction.user.tag} en #${interaction.channel.name} ha comenzado la interacción /${interaction.command}`);
 	try{
 		if(interaction.isButton()){
 			const filter = i => i.customId === `Alarma`;
@@ -126,6 +97,56 @@ discBot.on('interactionCreate', async interaction => {
 		}
 	}catch(e){
 		console.log(e)
+	}
+	
+});
+
+discBot.on(Events.GuildMemberAdd, (member) => {
+  console.log(`Nuevo Usuario "${member.user.username}" Ha entrado a "${member.guild.name}"` );
+  
+  discBot.channels.cache.find(val => val.name === 'patalking').send(member.user.username+' ha entrado al servidor', {tts: true});
+});
+
+
+
+// discBot.on("message", async (message) => {
+// 	if(berenjena == true){
+// 		message.react('🍆').catch(console.error);
+// 	}node b
+// 	//ejecutarcomandos(message);	
+// });
+
+// discBot.on("messageUpdate", (oldMessage, newMessage) => {
+// 	//ejecutarcomandos(newMessage);
+// });
+
+discBot.on(Events.VoiceStateUpdate, (olduser, newuser) => { //Indica que alguien se ha conectado al canal de voz principal
+	try{
+	// console.log("Old:\n")
+	// console.log(olduser)
+	// console.log("\n----------------------------------------------\n")
+	// console.log("new:\n")
+	// console.log(newuser.member.displayName)
+		if(newuser.channel == null && (olduser.channel.id == '294922283942674444' || olduser.channel.id == '294928756722630656' || olduser.channel.id == '294943063145578506')){
+			discBot.channels.fetch('294922283942674443').then(channel => channel.send({content: olduser.member.displayName+' Se ha desconectado', tts: true}).then(message => setTimeout(() => message.delete(), 5000)));
+			lastUserD = olduser.id;
+		}
+		if(newuser.channel != null){
+			if((newuser.channel.id == '294922283942674444' || newuser.channel.id == '294928756722630656' || newuser.channel.id == '294943063145578506') && olduser.channel == null){
+				if(newuser.member.user.username == 'iceword01'){
+					discBot.channels.fetch('294922283942674443').then(channel => channel.send({content: 'Javo se ha conectado', tts: true}).then(message => setTimeout(() => message.delete(), 5000)));
+				} else{
+					discBot.channels.fetch('294922283942674443').then(channel => channel.send({content: newuser.member.displayName+' Se ha conectado', tts: true}).then(message => setTimeout(() => message.delete(), 5000)));
+				}
+				lastUserC = newuser.id;
+			}
+			//SEERVIDOR DE PRUEBAS
+			// if(discBot.channels.cache.find(val => val.id == '294922283942674444').members.array().length == 1 && newuser.channel.name == 'Chorizo TV' && (olduser.voice.channel == null || olduser.voice.channel.name != 'Chorizo TV')){
+			// 	lastUserC = newuser.id;
+			// }
+	}
+	} catch (err){
+		console.log(err)
 	}
 	
 });
